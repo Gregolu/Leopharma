@@ -234,9 +234,9 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
 
     .main-image {
         position: absolute;
-        bottom: -60px;
+        bottom: -40px;
         left: -24px;
-        height: 180%;
+        height: 140%;
         object-fit: contain;
         transform-origin: bottom left;
       }

@@ -184,30 +184,45 @@ interface Marker {
 
         <div *ngIf="scannerState === 'result'" class="photo-analyze-view" style="width: 100%">
           
-          <div class="product-result-card">
-            <div class="pr-img-container">
-              <img src="/assets/images/questionnaire2-produit.png" alt="Produit scanné">
+          <div class="modern-result-card">
+            <div class="mrc-header">
+              <div class="mrc-risk-badge">
+                <span class="mrc-risk-icon">⚠️</span> SCORE : 89/100 - RISQUE ÉLEVÉ
+              </div>
             </div>
+            
+            <div class="mrc-body">
+              <div class="mrc-product-overview">
+                <div class="mrc-img-wrapper">
+                  <img src="/assets/images/questionnaire2-produit.png" alt="Produit scanné">
+                </div>
+                <div class="mrc-product-names">
+                  <h3 class="mrc-title">Nettoyant Multi-usages</h3>
+                  <p class="mrc-brand">Onaxa Corp</p>
+                </div>
+              </div>
 
-            <div class="pr-content">
-               <div class="pr-info">
-                 <div class="pr-badge">89/100 - Risque élevé</div>
-                 <h3 class="pr-title">Nettoyant Multi-usages</h3>
-                 <p class="pr-brand">Onaxa Corp</p>
-               </div>
+              <div class="mrc-divider"></div>
 
-               <div class="pr-separator"></div>
-
-               <div class="pr-allergens">
-                 <div class="pr-allergen-item">
-                   <div style="width:24px; height:24px; border-radius:50%; background-color:#FE3B3B;"></div>
-                   <span>Kathon CG</span>
-                 </div>
-                 <div class="pr-allergen-item">
-                   <div style="width:24px; height:24px; border-radius:50%; background-color:#FBB03B;"></div>
-                   <span>Glycol</span>
-                 </div>
-               </div>
+              <div class="mrc-allergens-section">
+                <h4 class="mrc-section-title">Allergènes détectés :</h4>
+                <div class="mrc-allergen-list">
+                  <div class="mrc-allergen-item">
+                    <div class="mrc-dot critical"></div>
+                    <div class="mrc-allergen-info">
+                      <span class="mrc-allergen-name">Kathon CG</span>
+                      <span class="mrc-allergen-gravity">Gravité : Sévère</span>
+                    </div>
+                  </div>
+                  <div class="mrc-allergen-item">
+                    <div class="mrc-dot moderate"></div>
+                    <div class="mrc-allergen-info">
+                       <span class="mrc-allergen-name">Glycol</span>
+                       <span class="mrc-allergen-gravity">Gravité : Modérée</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           
@@ -711,93 +726,136 @@ interface Marker {
       pointer-events: none;
     }
 
-    .product-result-card {
-      display: flex;
-      align-items: center;
+    .modern-result-card {
       width: 100%;
-      background: white;
-      padding: 16px;
-      border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      border: 1px solid #EAEAEA;
+      background: #FFFFFF;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
       margin-top: 10px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(0,0,0,0.05);
     }
-    .pr-img-container {
-      flex-shrink: 0;
-      width: 70px;
-      height: 120px;
-      margin-right: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .pr-img-container img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-    .pr-content {
-      flex: 1;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 16px;
-    }
-    .pr-info {
-      flex: 1;
-      min-width: 160px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      justify-content: center;
-    }
-    .pr-badge {
+    .mrc-header {
       background-color: #FE3B3B;
-      color: white;
-      padding: 12px 16px;
-      border-radius: 0px;
-      font-family: 'Gilroy-Bold', sans-serif;
-      font-size: 22px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 12px;
+      padding: 16px;
       text-align: center;
     }
-    .pr-title {
-      margin: 0;
-      font-size: 24px;
-      color: #204131;
+    .mrc-risk-badge {
+      color: #FFFFFF;
       font-family: 'Gilroy-Bold', sans-serif;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    .pr-brand {
-      margin: 0;
+    .mrc-risk-icon {
       font-size: 20px;
-      color: #000;
-      font-family: 'Gilroy-Medium', sans-serif;
     }
-    .pr-separator {
-      width: 2px;
-      height: 80px;
-      background-color: #D1E5DA;
+    .mrc-body {
+      padding: 24px;
     }
-    @media (max-width: 500px) {
-      .pr-separator {
-        display: none;
-      }
+    .mrc-product-overview {
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
-    .pr-allergens {
+    .mrc-img-wrapper {
+      width: 70px;
+      height: 70px;
+      background: #F5F5F5;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .mrc-img-wrapper img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+    }
+    .mrc-product-names {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      min-width: 120px;
+      align-items: flex-start;
+      text-align: left;
     }
-    .pr-allergen-item {
+    .mrc-title {
+      margin: 0 0 4px 0;
+      color: #204131;
+      font-family: 'Gilroy-Bold', sans-serif;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    .mrc-brand {
+      margin: 0;
+      color: #666;
+      font-family: 'Gilroy-Medium', sans-serif;
+      font-size: 14px;
+    }
+    .mrc-divider {
+      height: 1px;
+      background: #EAEAEA;
+      margin: 20px 0;
+      width: 100%;
+    }
+    .mrc-allergens-section {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      width: 100%;
+    }
+    .mrc-section-title {
+      margin: 0 0 16px 0;
+      color: #000;
+      font-family: 'Gilroy-Bold', sans-serif;
+      font-size: 16px;
+    }
+    .mrc-allergen-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .mrc-allergen-item {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-family: 'Gilroy-Medium', sans-serif;
-      font-size: 22px;
+      background: #F8FAF9;
+      padding: 12px 16px;
+      border-radius: 12px;
+    }
+    .mrc-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .mrc-dot.critical {
+      background-color: #FE3B3B;
+    }
+    .mrc-dot.moderate {
+      background-color: #FBB03B;
+    }
+    .mrc-allergen-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .mrc-allergen-name {
       color: #000;
+      font-family: 'Gilroy-Bold', sans-serif;
+      font-size: 15px;
+    }
+    .mrc-allergen-gravity {
+      color: #666;
+      font-family: 'Gilroy-Medium', sans-serif;
+      font-size: 12px;
+      margin-top: 2px;
     }
   `]
 })
