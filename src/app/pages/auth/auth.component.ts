@@ -34,7 +34,7 @@ import { Router, RouterLink } from '@angular/router';
           <p class="login-hint"><strong>Inscrivez-vous</strong> ou <strong>connectez-vous</strong> pour faire votre bilan.</p>
           
           <div class="illustration-box">
-             <img src="/assets/images/hand.png" alt="Illustration" class="auth-illustration">
+             <img src="/assets/images/Logo-manuderma.png" alt="Manuderma Logo" class="auth-illustration">
           </div>
 
           <div class="action-buttons">
@@ -372,7 +372,8 @@ import { Router, RouterLink } from '@angular/router';
       align-items: center;
     }
     .auth-illustration {
-      max-height: 100%;
+      max-height: 70px;
+      max-width: 80%;
       object-fit: contain;
     }
     
