@@ -1,0 +1,58 @@
+// layout.scss
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-regular);
+  background-color: #EAEAEA;
+  color: var(--color-secondary); // Use black secondary color for normal text
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-bold);
+  margin-top: 0;
+  color: var(--color-secondary); // Dark headers, can be primary optionally
+}
+
+// Mobile first container
+.app-container {
+  width: 100%;
+  max-width: var(--max-width);
+  min-height: 100vh;
+  margin: 0 auto;
+  background-color: var(--color-bg-app);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  box-shadow: 0 0 40px rgba(0,0,0,0.1);
+}
+
+.page-content {
+  flex: 1;
+  padding: 1.5rem;
+  padding-bottom: 90px; /* Space for bottom nav */
+  overflow-y: auto;
+  position: relative;
+  z-index: 2;
+}
+
+// Basic Cards
+.card {
+  background-color: var(--color-ui-white);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+  border: none;
+  
+  &-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+}
+

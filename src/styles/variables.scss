@@ -1,0 +1,28 @@
+// variables.scss
+:root {
+  --color-primary: #204131; // Dark green
+  --color-secondary: #000000; // Black
+  --color-ui-white: #FFFFFF;
+  --color-ui-light: #F8FAF9; // Very light green/gray
+  --color-ui-gray: #E0E5EC;
+  
+  --color-bg-app: #FFFFFF; // White background as per latest screens
+  
+  --color-accent-green: #38a169;
+
+  // States / Score mapping
+  --color-success: #38a169;  
+  --color-warning: #FF7B4F;  
+  --color-danger:  #E53E3E;  
+
+  // Typography
+  --font-bold: 'Gilroy-Bold', sans-serif;
+  --font-regular: 'Gilroy-Regular', sans-serif;
+  
+  // Layout
+  --max-width: 430px; // Standard iPhone size
+  --border-radius: 20px; 
+  --shadow-sm: 0 4px 20px rgba(32, 65, 49, 0.08);
+  --shadow-md: 0 10px 30px rgba(32, 65, 49, 0.12);
+}
+

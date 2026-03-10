@@ -1,0 +1,48 @@
+// buttons.scss
+button {
+  font-family: var(--font-bold);
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--color-primary); // Dark brown
+  color: var(--color-ui-white);
+  border-radius: 9999px;
+  padding: 1.25rem 2rem;
+  font-size: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(82, 56, 40, 0.2);
+  
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+}
+
+.btn-secondary {
+  background-color: var(--color-accent-green);
+  color: var(--color-ui-white);
+  border-radius: 9999px;
+  padding: 1.25rem 2rem;
+  font-size: 1rem;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(140, 166, 121, 0.2);
+  
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.btn-disabled {
+  background-color: var(--color-ui-gray);
+  color: #A0A0A0;
+  cursor: not-allowed;
+  box-shadow: none;
+  &:hover { opacity: 1; transform: none; }
+}

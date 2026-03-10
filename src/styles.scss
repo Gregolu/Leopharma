@@ -1,0 +1,129 @@
+@import url('https://fonts.cdnfonts.com/css/gilroy-bold');
+@import url('https://fonts.cdnfonts.com/css/gilroy-regular');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #204131;
+  --secondary-color: #000000;
+  --bg-color: #F5F5F5;
+  --white: #FFFFFF;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Gilroy-Regular', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Gilroy-Bold', sans-serif;
+  color: var(--primary-color);
+}
+
+.mobile-container {
+  width: 100%;
+  max-width: 390px;
+  height: 844px;
+  background-color: var(--white);
+  border-radius: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-area {
+  padding: 24px;
+  padding-bottom: 120px;
+}
+
+.content-area.no-scroll {
+  overflow: hidden !important;
+}
+
+.primary-btn {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 20px;
+  padding: 16px;
+  width: 100%;
+  font-family: 'Gilroy-Bold', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 24px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.primary-btn:hover {
+  opacity: 0.9;
+}
+
+.secondary-btn {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 20px;
+  padding: 16px;
+  width: 100%;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+  margin-top: 12px;
+}
+
+.card {
+  background-color: var(--bg-color);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: 'Gilroy-Regular', sans-serif;
+  box-sizing: border-box;
+}
+
+.nav-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--white);
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0 24px 0;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 10px;
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+/* Hide scrollbars */
+*::-webkit-scrollbar { display: none; }
+* { -ms-overflow-style: none; scrollbar-width: none; }

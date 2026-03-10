@@ -1,0 +1,320 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  background-color: var(--color-bg-app);
+}
+
+.top-nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 20px 20px 20px;
+  background-color: var(--color-bg-app);
+}
+
+.user-greeting {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-box {
+  width: 44px;
+  height: 44px;
+  background-color: var(--color-ui-white);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.greeting-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-text {
+  font-size: 0.8rem;
+  color: var(--color-secondary);
+  font-family: var(--font-regular);
+  opacity: 0.7;
+}
+
+.main-text {
+  font-size: 1.1rem;
+  font-family: var(--font-bold);
+  color: var(--color-secondary);
+}
+
+.profile-pic {
+  .avatar-circle {
+    width: 44px;
+    height: 44px;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-bold);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+.page-content {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  flex: 1;
+  padding-bottom: 100px; /* Space for absolute bottom nav */
+}
+
+/* Search Container */
+.search-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: var(--color-ui-white);
+  border-radius: 16px;
+  padding: 0 16px;
+  height: 54px;
+  box-shadow: var(--shadow-sm);
+
+  .search-icon {
+    font-size: 1rem;
+    color: var(--color-secondary);
+    opacity: 0.5;
+    margin-right: 12px;
+  }
+
+  input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-regular);
+    font-size: 0.95rem;
+    outline: none;
+    color: var(--color-secondary);
+  }
+}
+
+.filter-btn {
+  width: 54px;
+  height: 54px;
+  background-color: var(--color-accent-orange);
+  color: white;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(255, 123, 79, 0.3);
+  border: none;
+  cursor: pointer;
+}
+
+/* Hero Green Card */
+.hero-card {
+  background-color: var(--color-primary);
+  border-radius: 28px;
+  padding: 24px;
+  color: var(--color-ui-white);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .pill-tag {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-family: var(--font-bold);
+  }
+
+  .bookmark-icon {
+    font-size: 1.2rem;
+  }
+}
+
+.card-title {
+  font-size: 1.6rem;
+  font-family: var(--font-bold);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.card-subtitle {
+  font-size: 0.9rem;
+  font-family: var(--font-regular);
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+
+  .stats {
+    display: flex;
+    gap: 16px;
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      .val {
+        font-family: var(--font-bold);
+        font-size: 1.1rem;
+      }
+      .lbl {
+        font-size: 0.75rem;
+        opacity: 0.7;
+      }
+    }
+  }
+}
+
+.btn-accent-orange {
+  background-color: var(--color-accent-orange);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 24px;
+  font-size: 0.9rem;
+  font-family: var(--font-bold);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 123, 79, 0.3);
+}
+
+/* Category Chips */
+.category-chips {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chip {
+    background-color: var(--color-ui-white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-size: 0.9rem;
+    font-family: var(--font-bold);
+    color: var(--color-secondary);
+    white-space: nowrap;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+
+    &.active {
+      background-color: var(--color-primary);
+      color: white;
+    }
+  }
+}
+
+/* List / Job Cards Style */
+.section-title {
+  font-size: 1.2rem;
+  font-family: var(--font-bold);
+  color: var(--color-secondary);
+}
+
+.header-with-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.link-action {
+  font-size: 0.85rem;
+  color: var(--color-accent-orange);
+  font-family: var(--font-bold);
+  cursor: pointer;
+}
+
+.list-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.job-card {
+  background-color: var(--color-ui-white);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+
+  .job-icon-wrap {
+    width: 48px;
+    height: 48px;
+    background-color: var(--color-ui-light);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+  }
+
+  .job-info {
+    flex: 1;
+
+    .job-title {
+      font-size: 1rem;
+      font-family: var(--font-bold);
+      color: var(--color-secondary);
+      margin-bottom: 4px;
+    }
+
+    .job-company {
+      font-size: 0.8rem;
+      color: var(--color-secondary);
+      opacity: 0.6;
+    }
+  }
+}
+
+.btn-apply-sm {
+  background-color: var(--color-ui-light);
+  color: var(--color-primary);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-family: var(--font-bold);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: var(--color-primary);
+    color: white;
+  }
+}
