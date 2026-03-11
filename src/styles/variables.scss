@@ -1,7 +1,7 @@
 // variables.scss
 :root {
-  --color-primary: #204131; // Dark green
-  --color-secondary: #000000; // Black
+  --color-primary: var(--primary-color, #00af6c); // Dark green
+  --color-secondary: #111; // Black
   --color-ui-white: #FFFFFF;
   --color-ui-light: #F8FAF9; // Very light green/gray
   --color-ui-gray: #E0E5EC;

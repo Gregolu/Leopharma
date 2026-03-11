@@ -30,7 +30,7 @@ import { Component, Input } from '@angular/core';
       margin: 0;
       font-size: 1.125rem;
       color: var(--color-secondary);
-      font-family: 'Gilroy-Bold', sans-serif;
+      font-family: 'Rethink Sans', sans-serif; font-weight: 700;
     }
   `]
 })

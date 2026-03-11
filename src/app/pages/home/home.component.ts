@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, BottomNavComponent],
+  imports: [RouterLink],
   template: `
     <div class="home-wrapper">
       <header class="app-header">
         <div class="logo-box">
-          <img src="/assets/images/Logo-manuderma.png" alt="Manuderma Logo" class="header-logo">
+          <img src="/assets/images/logo-manuderma2@2x.png" alt="Manuderma Logo" class="header-logo">
         </div>
         <div class="user-avatar" routerLink="/auth">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -21,7 +20,8 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
       </header>
 
       <div class="main-content">
-        <h1 class="greeting">Eczéma <span class="highlight">des mains</span></h1>
+        <h1 class="greeting">Une démangeaison, <span class="highlight">
+         une rougeur ?</span></h1>
         
         <p class="subtitle">
           L’eczéma des mains est une affection cutanée fréquente pouvant provoquer sécheresse, rougeurs et démangeaisons.
@@ -32,15 +32,24 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
             <strong>Est-ce que cela pourrait concerner vos mains ?</strong><br>
             Évaluez votre situation en quelques minutes.
           </p>
-          <button routerLink="/questionnaire-flash" class="hero-btn">Évaluer mon risque</button>
+          <button routerLink="/questionnaire-flash" class="hero-btn">Réaliser mon bilan dermatologique</button>
         </div>
 
         <div class="image-wrapper">
-          <img src="/assets/images/hand.png" alt="Main" class="main-image">
+          <img src="/assets/images/visuel-main.png" alt="Main" class="main-image">
         </div>
+      </div> 
+ 
+      <div class="login-section" style="margin-top: 2rem; padding: 1.5rem; background: #F5F7FA; border-radius: 12px; text-align: center; border: 1px solid #EDEDED;">
+        <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.5rem; font-weight: 600;">Vous avez déjà un compte ?</h3>
+        <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.25rem;">Connectez-vous pour retrouver votre dossier médical, suivre l'évolution de vos symptômes et gérer vos alertes dermatologiques.</p>
+        <button routerLink="/auth" style="background: none; border: 1px solid var(--primary-color); color: var(--primary-color); padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 100%; transition: all 0.2s;">
+          Se connecter
+        </button>
       </div>
 
-      <app-bottom-nav></app-bottom-nav>
+
+      
 
 
       <div class="bottom-panel">
@@ -129,6 +138,16 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
 
       
       
+    
+
+      <div class="science-section" style="margin: 3rem 24px 5rem; padding: 2rem 1.5rem; text-align: center; background: #FFF; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+        <h2 style="font-size: 1.5rem; color: #1A4D2E; margin-bottom: 1rem; font-weight: 700;">Application scientifique</h2>
+        <p style="font-size: 1.05rem; color: #555; line-height: 1.5; margin-bottom: 2rem;">Découvrez des conseils personnalisés prodigués par des experts certifiés, explorez différentes solutions pour faciliter et améliorer votre santé.</p>
+        <div style="border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+          <img src="https://images.unsplash.com/photo-1584308666744-24d5e478546f?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3" alt="Mains scientifiques" style="width: 100%; height: auto; display: block;" />
+        </div>
+      </div>
+
     </div>
   `,
   styles: [`
@@ -158,7 +177,7 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
     }
 
     .header-logo {
-      height: 55px;
+      height: 35px;
       object-fit: contain;
     }
 
@@ -166,8 +185,8 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
       width: 44px;
       height: 44px;
       background: var(--white);
-      border: 1px solid var(--primary-color);
-      color: var(--primary-color);
+      border: 1px solid var(--primary-color, #00af6c);
+      color: var(--primary-color, #00af6c);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -181,6 +200,28 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
       padding: 16px 24px 0 24px;
       position: relative;
     }
+    
+    .main-content::before {
+      content: '';
+      position: absolute;
+      top: 10%; 
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 150px;
+      background-image: url('/assets/images/icone-manuderma@2x.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      opacity: 0.07;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .greeting, .subtitle, .cta-wrapper {
+      position: relative;
+      z-index: 1;
+    }
 
     .greeting {
       font-size: 32px;
@@ -190,7 +231,7 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
     }
     
     .highlight {
-      color: #204131;
+      color: var(--primary-color, #00af6c);
     }
 
     .subtitle {
@@ -206,18 +247,18 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
     }
 
     .question-text {
-      color: #204131;
+      color: var(--primary-color, #00af6c);
       font-size: 14px;
       margin: 0 0 16px 0;
     }
 
     .hero-btn {
-      background: var(--secondary-color);
+      background: #00af6c;
       color: var(--white);
       border: none;
       padding: 16px 32px;
       border-radius: 30px;
-      font-family: 'Gilroy-Bold', sans-serif;
+      font-family: 'Rethink Sans', sans-serif; font-weight: 700;
       font-size: 16px;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -234,16 +275,16 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
 
     .main-image {
         position: absolute;
-        bottom: -40px;
-        left: -24px;
+        bottom: -70px;
+        left: 50%;
+        transform: translateX(-50%);
         height: 140%;
         object-fit: contain;
-        transform-origin: bottom left;
       }
 
     .section-title {
       font-size: 22px;
-      color: var(--primary-color);
+      color: var(--primary-color, #00af6c);
       margin: 0 0 30px 0;
       text-align: center;
     }
@@ -281,7 +322,7 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
 
     .symptom-text h3 {
       font-size: 16px;
-      color: #204131;
+      color: var(--primary-color, #00af6c);
       margin: 0 0 8px 0;
     }
     
@@ -323,7 +364,7 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
 
     .benefit-icon {
       background: var(--white);
-      color: #204131;
+      color: var(--primary-color, #00af6c);
       width: 44px;
       height: 44px;
       border-radius: 50%;
@@ -336,7 +377,7 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
 
     .benefit-text h3 {
       font-size: 16px;
-      color: var(--primary-color);
+      color: var(--primary-color, #111);
       margin: 0 0 8px 0;
     }
 
@@ -348,7 +389,7 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
     }
 
     .bottom-panel {
-      background-color: #204131;
+      background-color: #111;
       color: var(--white);
       border-radius: 0;
       padding: 50px 24px;
@@ -374,12 +415,12 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
     }
 
     .panel-btn {
-      background: var(--secondary-color);
-      color: var(--white);
+      background: var(--primary-color, #00af6c);
+      color: #FFFFFF;
       border: none;
       padding: 16px 32px;
       border-radius: 30px;
-      font-family: 'Gilroy-Bold', sans-serif;
+      font-family: 'Rethink Sans', sans-serif; font-weight: 700;
       font-size: 16px;
       cursor: pointer;
       width: 100%;

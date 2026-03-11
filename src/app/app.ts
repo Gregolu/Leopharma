@@ -28,7 +28,7 @@ import { RouterOutlet } from '@angular/router';
     }
     ::ng-deep router-outlet + * {
       display: block;
-      height: 100%;
+      width: 100%;
     }
   `]
 })

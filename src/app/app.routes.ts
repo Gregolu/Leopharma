@@ -1,3 +1,5 @@
+import { NotificationsComponent } from './pages/notifications/notifications.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { QuestionnaireFlashComponent } from './pages/questionnaire-flash/questionnaire-flash.component';
@@ -5,7 +7,11 @@ import { PredispositionScoreComponent } from './pages/predisposition-score/predi
 import { AuthComponent } from './pages/auth/auth.component';
 import { PhotoAnalysisComponent } from './pages/photo-analysis/photo-analysis.component';
 import { QuestionnaireComponent } from './pages/questionnaire/questionnaire.component';
-import { ScoreComponent } from './pages/score/score.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
+import { DossierComponent } from './pages/dossier/dossier.component';
+import { ShareComponent } from './pages/share/share.component';
+import { MonitoringComponent } from './pages/monitoring/monitoring.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -15,5 +21,11 @@ export const routes: Routes = [
   { path: 'auth', component: AuthComponent },
   { path: 'photo-analysis', component: PhotoAnalysisComponent },
   { path: 'questionnaire', component: QuestionnaireComponent },
-  { path: 'score', component: ScoreComponent }
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'confirmation', component: ConfirmationComponent },
+  { path: 'dossier', component: DossierComponent },
+  { path: 'share', component: ShareComponent },
+  { path: 'monitoring', component: MonitoringComponent }
+  ,{ path: 'profile', component: ProfileComponent },
+  { path: 'notifications', component: NotificationsComponent }
 ];

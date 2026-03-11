@@ -8,269 +8,109 @@ import { Location, CommonModule } from '@angular/common';
   imports: [RouterLink, CommonModule],
   template: `
     <div class="score-container">
-      <header class="q-header">
-        <button class="back-btn" (click)="goBack()">
+      <img src="/assets/images/icone-manuderma@2x.png" alt="" class="bg-watermark">
+      
+      <header class="s-header">
+        <button class="s-back-btn" (click)="goBack()">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
         </button>
-        <h1 class="header-title">Prédisposition d'Eczéma</h1>
+        <span class="s-header-title">Prédisposition Score</span>
+        <div style="width: 24px;"></div>
       </header>
 
-      <div class="green-score-header">
-        <h2>Score de prédisposition</h2>
-        <p class="score-message">{{ getScoreMessage() }}</p>
-      </div>
+      <div class="centered-wrapper" style="flex:1; display:flex; flex-direction:column; justify-content:center; padding-bottom:40px;">
+      <div class="s-content">
+        <div class="status-badge" [ngClass]="severityClass + '-badge'">
+           <ng-container [ngSwitch]="severityClass">
+             <svg *ngSwitchCase="'green'" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+             <svg *ngSwitchCase="'orange'" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+             <svg *ngSwitchCase="'red'" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+           </ng-container>
+           <span>{{ getSeverityLabel() }}</span>
+        </div>
 
-      <div class="result-card">
-        
-        <div class="gauge-container">
+        <h2 class="main-msg">{{ getScoreMessage() }}</h2>
+        <p class="sub-msg">{{ getSeverityMessage() }}</p>
+
+        <!-- Gauge 3 niveaux -->
+        <div class="gauge-wrapper">
           <div class="gauge-bar">
-            <div class="gauge-segment green" [class.active-segment]="severityClass === 'green'"></div>
-            <div class="gauge-segment orange" [class.active-segment]="severityClass === 'orange'"></div>
-            <div class="gauge-segment red" [class.active-segment]="severityClass === 'red'"></div>
-            <div class="gauge-cursor" [style.left]="scorePercentage + '%'" [style.background-color]="severityColor"></div>
+            <div class="segment green"></div>
+            <div class="segment orange"></div>
+            <div class="segment red"></div>
+            <div class="gauge-cursor" [style.left]="scorePercentage + '%'" [style.backgroundColor]="severityColor"></div>
           </div>
-          
           <div class="gauge-labels">
             <span>Faible</span>
-            <span>Possible</span>
+            <span>Modérée</span>
             <span>Élevée</span>
           </div>
         </div>
 
-        <div class="result-content">
-          <div class="status-badge" [ngClass]="severityClass + '-badge'">
-            <span class="icon">{{ getSeverityIcon() }}</span> {{ getSeverityLabel() }}
+        <div class="recommendation-box">
+          <div class="rec-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
           </div>
-          <p class="result-text">
-            {{ getSeverityMessage() }}
-          </p>
+          <p>Il est recommandé de surveiller vos symptômes et d'en parler à un professionnel.</p>
         </div>
-
       </div>
 
-      <div class="action-section">
-        <p class="action-context">Il est recommandé de surveiller vos symptômes et d'en parler à un professionnel au besoin.</p>
-        <button routerLink="/auth" class="primary-btn pulse-btn" style="width:100%; border:none; padding:16px; border-radius:24px; font-family:'Gilroy-Bold',sans-serif; font-size:16px; background:#204131; color:white; margin-bottom:10px;">Compléter mon bilan santé</button>
-        <button routerLink="/questionnaire-flash" class="secondary-btn">Refaire le questionnaire</button>
+      <div class="s-footer" style="padding: 0 24px; margin-top:20px; display:flex; flex-direction:column; gap:12px; align-items:center;">
+        <button routerLink="/auth" class="primary-btn pulse-btn">Compléter mon bilan santé</button>
+        <button routerLink="/questionnaire-flash" class="secondary-btn">Refaire le test</button>
       </div>
-
     </div>
   `,
   styles: [`
-    .score-container {
-      display: flex;
-      flex-direction: column;
-      padding: 16px 24px 120px 24px;
-      min-height: 100%;
-      box-sizing: border-box;
-      background-color: var(--white);
-      font-family: 'Gilroy-Medium', sans-serif;
-    }
+    .score-container { display: flex; flex-direction: column; overflow: hidden; position: relative; background-color: var(--white, #FFFFFF); font-family: 'Rethink Sans', sans-serif; min-height: 100vh; padding-top: 0; }
+    
+    .bg-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-width: 300px; opacity: 0.05; pointer-events: none; z-index: 0; }
 
-    .q-header {
-      display: flex;
-      align-items: center;
-      padding-bottom: 20px;
-      background: transparent;
+    .s-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; position: relative; z-index: 10; }
+    .s-back-btn { background: none; border: none; color: var(--primary-color, #00af6c); cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; margin-left: -4px;}
+    .s-header-title { font-weight: 800; font-size: 18px; color: #111; text-align: center; flex: 1; }
+
+    .s-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 24px; position: relative; z-index: 10; text-align: center; }
+
+    .status-badge { display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; border-radius: 30px; font-weight: 800; font-size: 16px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .green-badge { background: #E8F8F5; color: #2ECC71; }
+    .orange-badge { background: #FEF5E7; color: #F39C12; }
+    .red-badge { background: #FDEDEC; color: #E74C3C; }
+
+    .main-msg { font-size: 20px; font-weight: 800; color: #111; margin: 0 0 12px; line-height: 1.3; white-space: pre-line; z-index:10;}
+    .sub-msg { font-size: 15px; color: #4B5563; margin: 0 0 40px; line-height: 1.4; font-weight: 500; padding: 0 10px; z-index:10;}
+
+    .gauge-wrapper { width: 100%; margin-bottom: 40px; position: relative; z-index:10;}
+    .gauge-bar { display: flex; height: 12px; border-radius: 6px; background: #EAEAEA; position: relative; margin-bottom: 12px; }
+    .segment { flex: 1; opacity: 0.8; height: 100%; }
+    .segment.green { background: #2ECC71; border-radius: 6px 0 0 6px; }
+    .segment.orange { background: #F39C12; }
+    .segment.red { background: #E74C3C; border-radius: 0 6px 6px 0; }
+    
+    .gauge-cursor { 
+      position: absolute; top: 50%; transform: translate(-50%, -50%);
+      width: 24px; height: 24px; border-radius: 50%; border: 4px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: left 0.5s ease-out, background-color 0.3s;
     }
     
-    .back-btn { 
-      background: none; 
-      border: none; 
-      color: #204131; 
-      display: flex; 
-      align-items: center; 
-      cursor: pointer; 
-      padding: 0; 
-    }
+    .gauge-labels { display: flex; justify-content: space-between; font-weight: 700; font-size: 12px; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    .header-title {
-      font-family: 'Gilroy-Bold', sans-serif;
-      font-size: 20px;
-      color: #204131;
-      margin: 0 0 0 16px;
-      line-height: 1;
-    }
+    .recommendation-box { display: flex; align-items: flex-start; gap: 12px; background: rgba(243, 244, 246, 0.9); padding: 16px; border-radius: 16px; color: #374151; font-size: 13px; font-weight: 600; line-height: 1.4; width: 100%; text-align: left; }
+    .rec-icon { color: var(--secondary-color-blue, #240bbe); flex-shrink: 0; }
 
-    .green-score-header {
-      background-color: #204131;
-      color: white;
-      padding: 24px 20px;
-      margin: 0 -24px 30px -24px;
-      text-align: center;
-    }
-    .green-score-header h2 {
-      color: white;
-      font-family: 'Gilroy-Bold', sans-serif;
-      font-size: 18px;
-      margin: 0 0 8px 0;
-    }
-    .green-score-header .score-message {
-      font-size: 15px;
-      color: white;
-      opacity: 0.9;
-      margin: 0;
-      line-height: 1.4;
-    }
-
-    .result-card {
-      background: #FAFAFA;
-      border-radius: 24px;
-      padding: 32px 20px;
-      border: 1px solid #EAEAEA;
-      margin-bottom: 40px;
-    }
-
-    .gauge-container {
-      margin-bottom: 32px;
-      position: relative;
-    }
-
-    .gauge-bar {
-      display: flex;
-      height: 12px;
-      border-radius: 6px;
-      background: #EAEAEA;
-      position: relative;
-      margin-bottom: 8px;
-    }
-
-    .gauge-segment {
-      flex: 1;
-      opacity: 0.3;
-      transition: all 0.3s ease;
-    }
-
-    .gauge-segment.green { background-color: #2ECC71; }
-    .gauge-segment.orange { background-color: #F39C12; }
-    .gauge-segment.red { background-color: #E74C3C; }
-
-    .gauge-segment:first-child { border-radius: 6px 0 0 6px; }
-    .gauge-segment:last-child { border-radius: 0 6px 6px 0; }
-
-    .gauge-segment.active-segment {
-      opacity: 1;
-    }
-
-    .gauge-cursor {
-      position: absolute;
-      top: -6px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background-color: #2ECC71;
-      border: 3px solid white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      transform: translateX(-50%);
-      z-index: 10;
-      transition: left 0.5s ease, background-color 0.5s ease;
-    }
-
-    .gauge-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      font-family: 'Gilroy-Bold', sans-serif;
-      color: #999;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .gauge-labels span {
-      flex: 1;
-      text-align: center;
-    }
-
-    .result-content {
-      text-align: center;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-family: 'Gilroy-Bold', sans-serif;
-      font-size: 16px;
-      margin-bottom: 16px;
-    }
-    .green-badge {
-      background-color: rgba(46, 204, 113, 0.15);
-      color: #27AE60;
-    }
-    .orange-badge {
-      background-color: rgba(243, 156, 18, 0.15);
-      color: #D68910;
-    }
-    .red-badge {
-      background-color: rgba(231, 76, 60, 0.15);
-      color: #C0392B;
-    }
-
-    .result-text {
-      color: #3f4756;
-      font-size: 16px;
-      line-height: 1.5;
-      margin: 0;
-    }
-
-    .action-section {
-      text-align: center;
-      margin-top: auto;
-    }
-
-    .action-context {
-      font-size: 13px;
-      color: #888;
-      margin-bottom: 20px;
-    }
-
-    .pulse-btn {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .pulse-btn::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255,255,255,0.2);
-      transform: translate(-50%, -50%) scale(0);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: translate(-50%, -50%) scale(0.95); opacity: 1; }
-      100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
-    }
-
-    .secondary-btn {
-      background: transparent;
-      color: #999;
-      border: 1px solid #EAEAEA;
-      cursor: pointer;
-      padding: 12px 24px;
-      border-radius: 30px;
-      margin-top: 10px;
-      font-family: 'Gilroy-Medium', sans-serif;
-      width: 100%;
-    }
-    .secondary-btn:hover {
-      background: #F9F9F9;
-      color: #3f4756;
-      border-color: #CCC;
-    }
+    .s-footer { padding: 20px 24px 30px; display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 10; background: linear-gradient(to top, white 85%, transparent); }
+    .primary-btn { width: 100%; background: var(--primary-color, #00af6c); color: white; border: none; padding: 16px; border-radius: 24px; font-family: 'Rethink Sans', sans-serif; font-weight: 800; font-size: 16px; cursor: pointer; }
+    .pulse-btn { position: relative; }
+    .pulse-btn::after { content: ''; position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; background: rgba(0,175,108,0.3); transform: translate(-50%, -50%) scale(0.9); border-radius: 24px; z-index: -1; animation: pulseObj 2s infinite; }
+    @keyframes pulseObj { 0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.08); opacity: 0; } }
+    .secondary-btn { width: 100%; background: transparent; color: #6B7280; border: 2px solid #E5E7EB; padding: 14px; border-radius: 24px; font-family: 'Rethink Sans', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; background: white;}
   `]
 })
 export class PredispositionScoreComponent {
   location = inject(Location);
   router = inject(Router);
 
-  score = 15; // default
+  score = 15; 
 
   constructor() {
     const nav = this.router.getCurrentNavigation();
@@ -279,14 +119,15 @@ export class PredispositionScoreComponent {
     }
   }
 
+  // Clamped for layout visually
   get scorePercentage() {
-    return Math.min(Math.max(this.score, 0), 100);
+    return Math.min(Math.max(this.score, 3), 97);
   }
 
   get severityColor() {
-     if (this.score <= 33) return '#2ECC71'; // Green
-     if (this.score <= 66) return '#F39C12'; // Orange
-     return '#E74C3C'; // Red
+     if (this.score <= 33) return '#2ECC71'; 
+     if (this.score <= 66) return '#F39C12'; 
+     return '#E74C3C'; 
   }
 
   get severityClass() {
@@ -295,16 +136,10 @@ export class PredispositionScoreComponent {
      return 'red';
   }
 
-  getSeverityIcon() {
-    if (this.score <= 33) return '✅';
-    if (this.score <= 66) return '⚠️';
-    return '🚨';
-  }
-
   getSeverityLabel() {
-    if (this.score <= 33) return 'Prédisposition faible';
-    if (this.score <= 66) return 'Prédisposition possible';
-    return 'Prédisposition élevée';
+    if (this.score <= 33) return 'Faible';
+    if (this.score <= 66) return 'Modérée';
+    return 'Élevée';
   }
 
   getSeverityMessage() {

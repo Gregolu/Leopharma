@@ -70,8 +70,8 @@ import { RouterLink } from '@angular/router';
       padding-bottom: 40px;
     }
     .a-header { display: flex; align-items: center; padding: 0 24px; margin-bottom: 24px; }
-    .back-btn { background: none; border: none; padding: 0; margin-right: 16px; color: #204131; cursor: pointer; }
-    .header-title { font-family: 'Gilroy-Bold', sans-serif; font-size: 18px; color: #204131; }
+    .back-btn { background: none; border: none; padding: 0; margin-right: 16px; color: var(--primary-color, #00af6c); cursor: pointer; }
+    .header-title { font-family: 'Rethink Sans', sans-serif; font-weight: 700; font-size: 18px; color: var(--primary-color, #00af6c); }
     
     .hand-map-hero {
       position: relative;
@@ -93,8 +93,8 @@ import { RouterLink } from '@angular/router';
 
     .callout { position: absolute; z-index: 10; }
     .callout-box { background: white; padding: 10px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; border-radius: 4px; }
-    .callout-title { font-family: 'Gilroy-Medium', sans-serif; font-size: 12px; color: #444; margin-bottom: 4px; white-space: nowrap; }
-    .callout-value { font-family: 'Gilroy-Bold', sans-serif; font-size: 20px; }
+    .callout-title { font-family: 'Rethink Sans', sans-serif; font-weight: 500; font-size: 12px; color: #444; margin-bottom: 4px; white-space: nowrap; }
+    .callout-value { font-family: 'Rethink Sans', sans-serif; font-weight: 700; font-size: 20px; }
 
     /* Colors */
     .callout-green .callout-box { border: 2px solid #2ECC71; }
@@ -129,7 +129,7 @@ import { RouterLink } from '@angular/router';
     .callout-br .connector-line { height: 2px; width: 50px; top: 50%; right: 100%; }
     .callout-br .connector-dot { top: calc(50% - 3px); right: calc(100% + 45px); }
 
-    .btn-cta-green { background: #204131; color: white; border: none; padding: 16px 32px; border-radius: 30px; font-family: 'Gilroy-Bold', sans-serif; font-size: 16px; width: 100%; cursor: pointer; display: block; text-align: center; text-decoration: none; }
+    .btn-cta-green { background: var(--primary-color, #00af6c); color: white; border: none; padding: 16px 32px; border-radius: 30px; font-family: 'Rethink Sans', sans-serif; font-weight: 700; font-size: 16px; width: 100%; cursor: pointer; display: block; text-align: center; text-decoration: none; }
   `]
 })
 export class PhotoAnalysisComponent {}

@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
       border: none;
       border-radius: 9999px;
       padding: 1rem 2rem;
-      font-family: 'Gilroy-Bold', sans-serif;
+      font-family: 'Rethink Sans', sans-serif; font-weight: 700;
       font-size: 1rem;
       cursor: pointer;
       width: 100%;

@@ -1,13 +1,21 @@
-@import url('https://fonts.cdnfonts.com/css/gilroy-bold');
-@import url('https://fonts.cdnfonts.com/css/gilroy-regular');
+@import url('https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
 :root {
-  --primary-color: #204131;
-  --secondary-color: #000000;
+  --primary-color: #00af6c;
+  --secondary-color-blue: #240bbe;
+  --color-primary: #00af6c;
+  --color-secondary: #111;
+  --color-ui-light: #F5F5F5;
+  --color-ui-gray: #E0E0E0;
+  --color-ui-white: #FFFFFF;
+  --border-radius: 20px;
+  --font-regular: 'Rethink Sans', sans-serif;
+  --font-bold: 'Rethink Sans', sans-serif;
+  --secondary-color: #111;
   --bg-color: #F5F5F5;
   --white: #FFFFFF;
 }
@@ -18,32 +26,47 @@ body {
   background-color: #e0e0e0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 100vh;
-  font-family: 'Gilroy-Regular', sans-serif;
+  font-family: 'Rethink Sans', sans-serif;
+}
+
+app-root {
+  display: block;
+  width: 100%;
+  max-width: 430px;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Gilroy-Bold', sans-serif;
-  color: var(--primary-color);
+  font-family: 'Rethink Sans', sans-serif; font-weight: 700;
+  color: var(--primary-color, #00af6c);
 }
 
 .mobile-container {
   width: 100%;
-  max-width: 390px;
-  height: 844px;
+  max-width: 430px;
+  min-height: 100vh;
+  margin: auto;
   background-color: var(--white);
-  border-radius: 40px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
   position: relative;
+  border-radius: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
-
-.content-area {
-  padding: 24px;
-  padding-bottom: 120px;
+  
+  .mobile-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('/assets/images/icone-manuderma@2x.png');
+    background-repeat: no-repeat;
+    background-position: center 30%;
+    background-size: 80%;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .content-area.no-scroll {
@@ -51,13 +74,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .primary-btn {
-  background-color: var(--primary-color);
+  background-color: var(--primary-color, #00af6c);
   color: var(--white);
   border: none;
   border-radius: 20px;
   padding: 16px;
   width: 100%;
-  font-family: 'Gilroy-Bold', sans-serif;
+  font-family: 'Rethink Sans', sans-serif; font-weight: 700;
   font-size: 16px;
   cursor: pointer;
   margin-top: 24px;
@@ -72,8 +95,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .secondary-btn {
   background-color: transparent;
-  color: var(--primary-color);
-  border: 1px solid var(--primary-color);
+  color: var(--primary-color, #00af6c);
+  border: 1px solid var(--primary-color, #00af6c);
   border-radius: 20px;
   padding: 16px;
   width: 100%;
@@ -100,7 +123,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  font-family: 'Gilroy-Regular', sans-serif;
+  font-family: 'Rethink Sans', sans-serif;
   box-sizing: border-box;
 }
 
@@ -127,3 +150,28 @@ h1, h2, h3, h4, h5, h6 {
 /* Hide scrollbars */
 *::-webkit-scrollbar { display: none; }
 * { -ms-overflow-style: none; scrollbar-width: none; }
+
+.page-container { 
+  position: relative; 
+  min-height: 100vh; 
+  z-index: 1; 
+  background-color: var(--background-light, #FAFAFA); 
+}
+.page-container::before { 
+  content: ""; 
+  position: fixed; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  width: 80vw; 
+  height: 80vw; 
+  max-width: 400px; 
+  max-height: 400px; 
+  background-image: url('/assets/images/icone-manuderma@2x.png'); 
+  background-repeat: no-repeat; 
+  background-position: center; 
+  background-size: contain; 
+  opacity: 0.04; 
+  z-index: -1; 
+  pointer-events: none; 
+}

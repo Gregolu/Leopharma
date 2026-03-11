@@ -7,8 +7,11 @@ import { Question, Option } from '../../models/question.model';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="card question-card">
-      <h2 class="card-title">{{ question.text }}</h2>
+    <div class="card question-card with-bg">
+      <div class="title-wrapper">
+        <h2 class="card-title">{{ question.text }}</h2>
+        <img src="/assets/images/barre-question.svg" class="title-underline" alt="">
+      </div>
       
       <div class="options-container">
         <!-- Single choice -->
@@ -37,13 +40,48 @@ import { Question, Option } from '../../models/question.model';
     </div>
   `,
   styles: [`
-    .question-card {
-      text-align: left;
+    .with-bg {
+      position: relative;
+      background-image: url('/assets/images/icone-manuderma@2x.png');
+      background-repeat: no-repeat;
+      background-position: right -40px bottom -40px;
+      background-size: 200px;
+      min-height: 400px;
+      background-color: var(--color-ui-light);
+    }
+    .with-bg::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(245,245,245,0.7);
+      border-radius: 16px;
+      z-index: 0;
+    }
+    .question-card > * {
+      position: relative;
+      z-index: 1;
+    }
+    .title-wrapper {
+      margin-bottom: 2rem;
+      display: inline-block;
+      position: relative;
     }
     .card-title {
-      font-size: 1.5rem;
-      margin-bottom: 2rem;
+      font-size: 1.6rem;
+      margin-bottom: 5px;
       line-height: 1.3;
+      color: var(--secondary-color-blue, #240bbe);
+      font-family: var(--font-bold, 'Rethink Sans', sans-serif);
+      font-weight: 700;
+    }
+    .title-underline {
+      width: auto;
+      height: 12px;
+      display: block;
+      margin-top: 4px;
+    }
+    .question-card {
+      text-align: left;
     }
     .options-container {
       display: flex;
