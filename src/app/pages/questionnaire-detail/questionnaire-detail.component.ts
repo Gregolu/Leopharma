@@ -53,17 +53,14 @@ interface QInstance {
       <!-- QUESTIONNAIRE (always visible) -->
       <div class="qd-form">
         <!-- Mode tag -->
-        <div class="form-mode-tag view-tag" *ngIf="activeMode === 'view'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-          <span>Réponse du {{ selectedInstance ? formatDate(selectedInstance.date) : '' }}</span>
+        <div class="response-date-display" *ngIf="activeMode === 'view' && selectedInstance">
+          Répondu le {{ formatDate(selectedInstance.date) }}
         </div>
-        <div class="form-mode-tag update-tag" *ngIf="activeMode === 'update'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-          <span>Nouvelle réponse — {{ formatDate(today) }}</span>
+        <div class="response-date-display update-mode" *ngIf="activeMode === 'update'">
+          Nouvelle réponse - {{ formatDate(today) }}
         </div>
-        <div class="form-mode-tag edit-tag" *ngIf="activeMode === 'edit'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-          <span>Modification — {{ editingInstance ? formatDate(editingInstance.date) : '' }}</span>
+        <div class="response-date-display edit-mode" *ngIf="activeMode === 'edit'">
+          Modification du {{ editingInstance ? formatDate(editingInstance.date) : '' }}
         </div>
 
         <div class="questions-list">
@@ -125,6 +122,20 @@ interface QInstance {
     </div>
   `,
   styles: [`
+    .response-date-display {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary-color, #00af6c);
+      margin: 0 0 24px 0;
+      padding: 16px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid rgba(0, 175, 108, 0.2);
+    }
+    .response-date-display.update-mode { color: #f59e0b; border-color: rgba(245, 158, 11, 0.2); }
+    .response-date-display.edit-mode { color: #3b82f6; border-color: rgba(59, 130, 246, 0.2); }
     :host {
       display: block;
       min-height: 100vh;
