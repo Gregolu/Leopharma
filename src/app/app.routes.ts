@@ -1,5 +1,6 @@
 import { NotificationsComponent } from './pages/notifications/notifications.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { QuestionnaireDetailComponent } from './pages/questionnaire-detail/questionnaire-detail.component';
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { QuestionnaireFlashComponent } from './pages/questionnaire-flash/questionnaire-flash.component';
@@ -27,5 +28,6 @@ export const routes: Routes = [
   { path: 'share', component: ShareComponent },
   { path: 'monitoring', component: MonitoringComponent }
   ,{ path: 'profile', component: ProfileComponent },
-  { path: 'notifications', component: NotificationsComponent }
+  { path: 'notifications', component: NotificationsComponent },
+  { path: 'questionnaire-detail/:id', component: QuestionnaireDetailComponent }
 ];

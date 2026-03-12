@@ -57,7 +57,7 @@ import { Router } from '@angular/router';
         
         <div class="list-section" *ngIf="isAnalyseOpen" style="padding-top: 16px;">
           
-          <div class="list-item" (click)="goTo('/questionnaire')">
+          <div class="list-item" (click)="goTo('/questionnaire-detail/analyse-mains')">
             <div class="item-icon green-dot"></div>
             <div class="item-icon-wrap">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color, #00af6c)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
@@ -71,7 +71,7 @@ import { Router } from '@angular/router';
         </div>
       </div>
           
-          <div class="list-item" (click)="goTo('/questionnaire')">
+          <div class="list-item" (click)="goTo('/questionnaire-detail/scan-produit')">
             <div class="item-icon green-dot"></div>
             <div class="item-icon-wrap">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color, #00af6c)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="12" x2="17" y2="12"></line></svg>
@@ -84,7 +84,7 @@ import { Router } from '@angular/router';
             </div>
           </div>
 
-          <div class="list-item" (click)="goTo('/questionnaire')">
+          <div class="list-item" (click)="goTo('/questionnaire-detail/autres')">
             <div class="item-icon green-dot"></div>
             <div class="item-icon-wrap">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color, #00af6c)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
