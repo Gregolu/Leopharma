@@ -50,13 +50,20 @@ interface QInstance {
         </button>
       </div>
 
-      <!-- QUESTIONNAIRE FORM -->
-      <div class="qd-form" *ngIf="activeMode !== 'none'">
-        <div class="form-mode-tag" [class.edit-tag]="activeMode === 'edit'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" *ngIf="activeMode === 'update'"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" *ngIf="activeMode === 'edit'"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-          <span *ngIf="activeMode === 'update'">Nouvelle réponse — {{ formatDate(today) }}</span>
-          <span *ngIf="activeMode === 'edit'">Modification — {{ editingInstance ? formatDate(editingInstance.date) : '' }}</span>
+      <!-- QUESTIONNAIRE (always visible) -->
+      <div class="qd-form">
+        <!-- Mode tag -->
+        <div class="form-mode-tag view-tag" *ngIf="activeMode === 'view'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <span>Réponse du {{ selectedInstance ? formatDate(selectedInstance.date) : '' }}</span>
+        </div>
+        <div class="form-mode-tag update-tag" *ngIf="activeMode === 'update'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span>Nouvelle réponse — {{ formatDate(today) }}</span>
+        </div>
+        <div class="form-mode-tag edit-tag" *ngIf="activeMode === 'edit'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          <span>Modification — {{ editingInstance ? formatDate(editingInstance.date) : '' }}</span>
         </div>
 
         <div class="questions-list">
@@ -68,7 +75,8 @@ interface QInstance {
                 *ngFor="let opt of q.options"
                 class="opt-btn"
                 [class.selected]="isSelected(q.id, opt.id)"
-                (click)="toggleOption(q.id, opt.id, q.type)">
+                [class.readonly]="activeMode === 'view'"
+                (click)="activeMode !== 'view' && toggleOption(q.id, opt.id, q.type)">
                 <span class="opt-check" *ngIf="isSelected(q.id, opt.id)">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </span>
@@ -78,7 +86,7 @@ interface QInstance {
           </div>
         </div>
 
-        <div class="form-actions">
+        <div class="form-actions" *ngIf="activeMode !== 'view'">
           <button class="cancel-btn" (click)="cancelEdit()">Annuler</button>
           <button class="save-btn" (click)="save()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -87,13 +95,8 @@ interface QInstance {
         </div>
       </div>
 
-      <!-- HISTORY -->
+      <!-- HISTORY (no title) -->
       <div class="qd-history">
-        <div class="history-header-row">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color, #00af6c)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          Historique des réponses
-        </div>
-
         <div class="no-history" *ngIf="instances.length === 0">
           Aucune réponse enregistrée pour le moment.
         </div>
@@ -101,7 +104,7 @@ interface QInstance {
         <div
           class="history-card"
           *ngFor="let inst of instances; let i = index"
-          [class.highlighted]="editingInstanceId === inst.id">
+          [class.highlighted]="selectedInstanceId === inst.id && activeMode === 'view'">
           <div class="history-card-left">
             <div class="history-badge" [class.latest-badge]="i === 0">
               {{ i === 0 ? 'Dernière' : '#' + (instances.length - i) }}
@@ -111,7 +114,7 @@ interface QInstance {
           <button
             class="modifier-btn"
             (click)="startEdit(inst)"
-            [disabled]="activeMode !== 'none'">
+            [disabled]="activeMode !== 'view'">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
             Modifier
           </button>
@@ -235,7 +238,7 @@ interface QInstance {
       cursor: not-allowed;
     }
 
-    /* ── FORM ──────────────────────────────────── */
+    /* ── QUESTIONNAIRE ─────────────────────────── */
     .qd-form {
       margin: 20px 20px 0;
       background: white;
@@ -248,11 +251,20 @@ interface QInstance {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 12px 16px;
-      background: #f0f9f5;
-      border-bottom: 1px solid #e4f0ea;
-      font-size: 13px;
+      padding: 10px 16px;
+      font-size: 12px;
       font-weight: 700;
+      border-bottom: 1px solid #F2F4F7;
+    }
+
+    .form-mode-tag.view-tag {
+      background: #F9FAFB;
+      color: #64748b;
+    }
+
+    .form-mode-tag.update-tag {
+      background: #f0f9f5;
+      border-color: #e4f0ea;
       color: var(--primary-color, #00af6c);
     }
 
@@ -265,7 +277,6 @@ interface QInstance {
     .questions-list {
       display: flex;
       flex-direction: column;
-      gap: 0;
     }
 
     .question-card {
@@ -317,11 +328,21 @@ interface QInstance {
       transition: all 0.18s;
     }
 
+    .opt-btn.readonly {
+      cursor: default;
+      pointer-events: none;
+    }
+
     .opt-btn.selected {
       background: #f0f9f5;
       border-color: var(--primary-color, #00af6c);
       color: var(--primary-color, #00af6c);
       font-weight: 700;
+    }
+
+    .opt-btn.readonly.selected {
+      background: #f0f9f5;
+      border-color: var(--primary-color, #00af6c);
     }
 
     .opt-check {
@@ -376,20 +397,10 @@ interface QInstance {
 
     /* ── HISTORY ───────────────────────────────── */
     .qd-history {
-      margin: 20px 20px 0;
+      margin: 16px 20px 0;
       display: flex;
       flex-direction: column;
       gap: 10px;
-    }
-
-    .history-header-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #3f4756;
-      padding: 4px 0;
     }
 
     .no-history {
@@ -408,12 +419,12 @@ interface QInstance {
       background: #F3F4F6;
       border-radius: 12px;
       padding: 14px 16px;
-      transition: box-shadow 0.2s;
+      transition: box-shadow 0.2s, background 0.2s;
     }
 
     .history-card.highlighted {
-      background: #f0f4ff;
-      box-shadow: 0 0 0 2px #204131;
+      background: #e8f5ee;
+      box-shadow: 0 0 0 2px var(--primary-color, #00af6c);
     }
 
     .history-card-left {
@@ -495,23 +506,34 @@ export class QuestionnaireDetailComponent implements OnInit {
     }
   ];
 
-  activeMode: 'none' | 'update' | 'edit' = 'none';
-  editingInstanceId: string | null = null;
+  // 'view' = read-only, 'update' = new entry, 'edit' = modify existing
+  activeMode: 'view' | 'update' | 'edit' = 'view';
+  selectedInstanceId: string | null = null;
   currentAnswers: Record<number, string | string[]> = {};
 
   get latestInstance(): QInstance | null {
     return this.instances.length > 0 ? this.instances[0] : null;
   }
 
+  get selectedInstance(): QInstance | null {
+    if (!this.selectedInstanceId) return null;
+    return this.instances.find(i => i.id === this.selectedInstanceId) ?? null;
+  }
+
   get editingInstance(): QInstance | null {
-    if (!this.editingInstanceId) return null;
-    return this.instances.find(i => i.id === this.editingInstanceId) ?? null;
+    if (this.activeMode !== 'edit' || !this.selectedInstanceId) return null;
+    return this.instances.find(i => i.id === this.selectedInstanceId) ?? null;
   }
 
   ngOnInit() {
     this.questionnaireId = this.route.snapshot.paramMap.get('id') || 'analyse-mains';
     this.questionnaireTitle = this.getTitleFromId(this.questionnaireId);
     this.questions = this.questionnaireService.getQuestions();
+    // Display the most recent instance by default
+    if (this.instances.length > 0) {
+      this.selectedInstanceId = this.instances[0].id;
+      this.currentAnswers = { ...this.instances[0].answers };
+    }
   }
 
   getTitleFromId(id: string): string {
@@ -525,7 +547,7 @@ export class QuestionnaireDetailComponent implements OnInit {
 
   startUpdate() {
     this.currentAnswers = {};
-    this.editingInstanceId = null;
+    this.selectedInstanceId = null;
     this.activeMode = 'update';
     setTimeout(() => {
       document.querySelector('.qd-form')?.scrollIntoView({ behavior: 'smooth' });
@@ -534,7 +556,7 @@ export class QuestionnaireDetailComponent implements OnInit {
 
   startEdit(instance: QInstance) {
     this.currentAnswers = { ...instance.answers };
-    this.editingInstanceId = instance.id;
+    this.selectedInstanceId = instance.id;
     this.activeMode = 'edit';
     setTimeout(() => {
       document.querySelector('.qd-form')?.scrollIntoView({ behavior: 'smooth' });
@@ -542,9 +564,12 @@ export class QuestionnaireDetailComponent implements OnInit {
   }
 
   cancelEdit() {
-    this.activeMode = 'none';
-    this.editingInstanceId = null;
-    this.currentAnswers = {};
+    // Return to viewing the latest instance
+    if (this.instances.length > 0) {
+      this.selectedInstanceId = this.instances[0].id;
+      this.currentAnswers = { ...this.instances[0].answers };
+    }
+    this.activeMode = 'view';
   }
 
   toggleOption(questionId: number, optionId: string, type: string) {
@@ -573,16 +598,16 @@ export class QuestionnaireDetailComponent implements OnInit {
         answers: { ...this.currentAnswers }
       };
       this.instances = [newInstance, ...this.instances];
-    } else if (this.activeMode === 'edit' && this.editingInstanceId) {
+      // Select and view the newly created instance
+      this.selectedInstanceId = newInstance.id;
+    } else if (this.activeMode === 'edit' && this.selectedInstanceId) {
       this.instances = this.instances.map(inst =>
-        inst.id === this.editingInstanceId
+        inst.id === this.selectedInstanceId
           ? { ...inst, answers: { ...this.currentAnswers } }
           : inst
       );
     }
-    this.activeMode = 'none';
-    this.editingInstanceId = null;
-    this.currentAnswers = {};
+    this.activeMode = 'view';
   }
 
   formatDate(date: Date): string {
