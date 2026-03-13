@@ -9,7 +9,9 @@ import { Router } from '@angular/router';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="q-wrapper">
-      <div class="green-header-area">
+      <div class="green-header-area" style="overflow: hidden; position: relative;">
+        <img src="/assets/images/hand-dashboard-visual.png" style="position: absolute; top: 50%; right: 0; transform: translateY(-50%); width: 250px; opacity: 0.15; pointer-events: none; mix-blend-mode: overlay;" alt="" />
+        <div style="position: relative; z-index: 1;">
         <header class="app-header">
           <button class="back-btn" (click)="goBack()">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
@@ -22,8 +24,8 @@ import { Router } from '@angular/router';
           <h1 class="intro-title" style="color:white;">Mes mains sont-elles à risque ?</h1>
           <p class="intro-text" style="color:white;">L’eczéma chronique des mains touche environ 4,9 % de la population adulte en France.</p>
         </div>
+        </div>
       </div>
-
       <div class="q-content" style="margin-top: 0px; position:relative; z-index:20; background: white;">
 
         <div class="question-block">

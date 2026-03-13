@@ -20,8 +20,7 @@ import { RouterLink } from '@angular/router';
       </header>
 
       <div class="main-content">
-        <h1 class="greeting">Une démangeaison, <span class="highlight">
-         une rougeur ?</span></h1>
+        <h1 class="greeting">Une démangeaison, <span class="highlight">une rougeur sur vos mains ?</span></h1>
         
         <p class="subtitle">
           L’eczéma des mains est une affection cutanée fréquente pouvant provoquer sécheresse, rougeurs et démangeaisons.
@@ -32,7 +31,7 @@ import { RouterLink } from '@angular/router';
             <strong>Est-ce que cela pourrait concerner vos mains ?</strong><br>
             Évaluez votre situation en quelques minutes.
           </p>
-          <button routerLink="/questionnaire-flash" class="hero-btn">Réaliser mon bilan dermatologique</button>
+          <button routerLink="/questionnaire-flash" class="hero-btn">Êtes vous concerné par l'eczéma ?</button>
         </div>
 
         <div class="image-wrapper">
@@ -55,7 +54,7 @@ import { RouterLink } from '@angular/router';
       <div class="bottom-panel">
         <h2>Commencer le bilan de mes mains</h2>
         <p>Commencez à surveiller la santé de vos mains grâce à des questionnaires et à un suivi personnalisé.</p>
-        <button routerLink="/auth" class="panel-btn">Commencer mon bilan santé</button>
+        <button routerLink="/auth" class="panel-btn">Réaliser mon bilan dermatologique complet</button>
       </div>
 
       <div class="symptoms-section">
@@ -144,7 +143,7 @@ import { RouterLink } from '@angular/router';
         <h2 style="font-size: 1.5rem; color: #1A4D2E; margin-bottom: 1rem; font-weight: 700;">Application scientifique</h2>
         <p style="font-size: 1.05rem; color: #555; line-height: 1.5; margin-bottom: 2rem;">Découvrez des conseils personnalisés prodigués par des experts certifiés, explorez différentes solutions pour faciliter et améliorer votre santé.</p>
         <div style="border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-          <img src="https://images.unsplash.com/photo-1584308666744-24d5e478546f?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3" alt="Mains scientifiques" style="width: 100%; height: auto; display: block;" />
+          <img src="/assets/images/labo.png" alt="Mains scientifiques" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 16px; display: block;" />
         </div>
       </div>
 

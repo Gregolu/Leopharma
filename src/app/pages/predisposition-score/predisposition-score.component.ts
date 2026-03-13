@@ -11,13 +11,7 @@ import { PatientStateService } from '../../services/patient-state.service';
     <div class="score-container">
       <img src="/assets/images/icone-manuderma@2x.png" alt="" class="bg-watermark">
       
-      <header class="s-header">
-        <button class="s-back-btn" (click)="goBack()">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
-        </button>
-        <span class="s-header-title">Prédisposition Score</span>
-        <div style="width: 24px;"></div>
-      </header>
+      <div class="green-header-area" style="background: var(--primary-color, #00af6c); color: white; padding-top: 50px; padding-bottom: 20px;"><header class="s-header" style="padding: 0 20px;"><button class="s-back-btn" (click)="goBack()" style="color: white;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg></button><span class="s-header-title" style="color: white; font-size: 1.25rem;">Prédisposition Score</span><div style="width: 24px;"></div></header></div>
 
       <div class="centered-wrapper" style="flex:1; display:flex; flex-direction:column; justify-content:center; padding-bottom:40px;">
       <div class="s-content">
