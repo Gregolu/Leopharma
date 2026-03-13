@@ -181,7 +181,13 @@ interface Marker {
             <div style="width: 100%; aspect-ratio: 1; border: 2px dashed #EAEAEA; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative;">
                <input type="file" accept="image/*" capture="environment" style="position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 5;" (change)="onFile0($event, 'RF')">
                <div *ngIf="!photos['RF']" style="display:flex; flex-direction:column; align-items:center;">
-                  <svg width="24" height="24" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+                  
+<div class="hand-simulation" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+  <div style="width:24px; height:24px; border-radius:50%; border: 2px dashed #00af6c; display:flex; align-items:center; justify-content:center;">
+     <div style="width:8px; height:8px; border-radius:50%; background-color:#00af6c;"></div>
+  </div>
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00af6c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v7"></path><path d="M10 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v9"></path><path d="M6 8a2 2 0 0 0-2-v0a2 2 0 0 0-2 2v10a6 6 0 0 0 6 6h4a6 6 0 0 0 6-6v-9"></path></svg>
+</div>
                </div>
                <img *ngIf="photos['RF']" [src]="photos['RF']" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;" />
             </div>
@@ -192,7 +198,13 @@ interface Marker {
             <div style="width: 100%; aspect-ratio: 1; border: 2px dashed #EAEAEA; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative;">
                <input type="file" accept="image/*" capture="environment" style="position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 5;" (change)="onFile0($event, 'RB')">
                <div *ngIf="!photos['RB']" style="display:flex; flex-direction:column; align-items:center;">
-                  <svg width="24" height="24" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+                  
+<div class="hand-simulation" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+  <div style="width:24px; height:24px; border-radius:50%; border: 2px dashed #00af6c; display:flex; align-items:center; justify-content:center;">
+     <div style="width:8px; height:8px; border-radius:50%; background-color:#00af6c;"></div>
+  </div>
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00af6c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v7"></path><path d="M10 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v9"></path><path d="M6 8a2 2 0 0 0-2-v0a2 2 0 0 0-2 2v10a6 6 0 0 0 6 6h4a6 6 0 0 0 6-6v-9"></path></svg>
+</div>
                </div>
                <img *ngIf="photos['RB']" [src]="photos['RB']" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;" />
             </div>
@@ -203,7 +215,13 @@ interface Marker {
             <div style="width: 100%; aspect-ratio: 1; border: 2px dashed #EAEAEA; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative;">
                <input type="file" accept="image/*" capture="environment" style="position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 5;" (change)="onFile0($event, 'LF')">
                <div *ngIf="!photos['LF']" style="display:flex; flex-direction:column; align-items:center;">
-                  <svg width="24" height="24" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+                  
+<div class="hand-simulation" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+  <div style="width:24px; height:24px; border-radius:50%; border: 2px dashed #00af6c; display:flex; align-items:center; justify-content:center;">
+     <div style="width:8px; height:8px; border-radius:50%; background-color:#00af6c;"></div>
+  </div>
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00af6c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v7"></path><path d="M10 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v9"></path><path d="M6 8a2 2 0 0 0-2-v0a2 2 0 0 0-2 2v10a6 6 0 0 0 6 6h4a6 6 0 0 0 6-6v-9"></path></svg>
+</div>
                </div>
                <img *ngIf="photos['LF']" [src]="photos['LF']" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;" />
             </div>
@@ -214,7 +232,13 @@ interface Marker {
             <div style="width: 100%; aspect-ratio: 1; border: 2px dashed #EAEAEA; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative;">
                <input type="file" accept="image/*" capture="environment" style="position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 5;" (change)="onFile0($event, 'LB')">
                <div *ngIf="!photos['LB']" style="display:flex; flex-direction:column; align-items:center;">
-                  <svg width="24" height="24" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+                  
+<div class="hand-simulation" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+  <div style="width:24px; height:24px; border-radius:50%; border: 2px dashed #00af6c; display:flex; align-items:center; justify-content:center;">
+     <div style="width:8px; height:8px; border-radius:50%; background-color:#00af6c;"></div>
+  </div>
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00af6c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v7"></path><path d="M10 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v9"></path><path d="M6 8a2 2 0 0 0-2-v0a2 2 0 0 0-2 2v10a6 6 0 0 0 6 6h4a6 6 0 0 0 6-6v-9"></path></svg>
+</div>
                </div>
                <img *ngIf="photos['LB']" [src]="photos['LB']" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;" />
             </div>

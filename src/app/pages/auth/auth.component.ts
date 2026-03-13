@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -290,7 +291,20 @@ import { Router } from '@angular/router';
     }
   `]
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit {
+  route = inject(ActivatedRoute);
+  
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['tab']) {
+        this.activeTab = params['tab'];
+      }
+      if (history.state && history.state.tab) {
+        this.activeTab = history.state.tab;
+      }
+    });
+  }
+
   router = inject(Router);
 
   activeTab: 'login' | 'register' | 'success' = 'login';

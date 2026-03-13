@@ -51,7 +51,7 @@ import { PatientStateService } from '../../services/patient-state.service';
       </div>
 
       <div class="s-footer" style="padding: 0 24px; margin-top:20px; display:flex; flex-direction:column; gap:12px; align-items:center;">
-        <button routerLink="/auth" class="primary-btn pulse-btn">Compléter mon bilan santé</button>
+        <button [routerLink]="['/auth']" [queryParams]="{tab: 'register'}" class="primary-btn pulse-btn">Compléter mon bilan santé</button>
         <button routerLink="/questionnaire-flash" class="secondary-btn">Refaire le test</button>
       </div>
     </div>

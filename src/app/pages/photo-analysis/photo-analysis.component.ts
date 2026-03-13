@@ -24,7 +24,17 @@ import { Router } from '@angular/router';
         <div class="photo-case">
           <p class="case-label">Main droite (Avant)</p>
           <div class="upload-zone" (click)="triggerFileInput('file-1')" *ngIf="!photos['1']">
-            <svg width="32" height="32" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            
+            <div class="hand-simulation" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+              <div style="width:20px; height:20px; border-radius:50%; border: 3px solid #00af6c; background-color: #e5f7ed;"></div>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00af6c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+                <path d="M14 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v7"></path>
+                <path d="M10 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v9"></path>
+                <path d="M6 8a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v10a6 6 0 0 0 6 6h4a6 6 0 0 0 6-6v-9"></path>
+              </svg>
+            </div>
+
           </div>
           <div class="preview-zone" *ngIf="photos['1']">
             <img [src]="photos['1']" alt="Main droite (Avant)" class="preview-img">
@@ -37,7 +47,17 @@ import { Router } from '@angular/router';
         <div class="photo-case">
           <p class="case-label">Main droite (Arrière)</p>
           <div class="upload-zone" (click)="triggerFileInput('file-2')" *ngIf="!photos['2']">
-             <svg width="32" height="32" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+             
+            <div class="hand-simulation" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+              <div style="width:20px; height:20px; border-radius:50%; border: 3px solid #00af6c; background-color: #e5f7ed;"></div>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00af6c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+                <path d="M14 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v7"></path>
+                <path d="M10 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v9"></path>
+                <path d="M6 8a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v10a6 6 0 0 0 6 6h4a6 6 0 0 0 6-6v-9"></path>
+              </svg>
+            </div>
+
           </div>
           <div class="preview-zone" *ngIf="photos['2']">
             <img [src]="photos['2']" alt="Main droite (Arrière)" class="preview-img">
@@ -50,7 +70,17 @@ import { Router } from '@angular/router';
         <div class="photo-case">
           <p class="case-label">Main gauche (Avant)</p>
           <div class="upload-zone" (click)="triggerFileInput('file-3')" *ngIf="!photos['3']">
-             <svg width="32" height="32" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+             
+            <div class="hand-simulation" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+              <div style="width:20px; height:20px; border-radius:50%; border: 3px solid #00af6c; background-color: #e5f7ed;"></div>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00af6c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+                <path d="M14 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v7"></path>
+                <path d="M10 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v9"></path>
+                <path d="M6 8a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v10a6 6 0 0 0 6 6h4a6 6 0 0 0 6-6v-9"></path>
+              </svg>
+            </div>
+
           </div>
           <div class="preview-zone" *ngIf="photos['3']">
             <img [src]="photos['3']" alt="Main gauche (Avant)" class="preview-img">
@@ -63,7 +93,17 @@ import { Router } from '@angular/router';
         <div class="photo-case">
           <p class="case-label">Main gauche (Arrière)</p>
           <div class="upload-zone" (click)="triggerFileInput('file-4')" *ngIf="!photos['4']">
-             <svg width="32" height="32" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+             
+            <div class="hand-simulation" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+              <div style="width:20px; height:20px; border-radius:50%; border: 3px solid #00af6c; background-color: #e5f7ed;"></div>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00af6c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+                <path d="M14 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v7"></path>
+                <path d="M10 4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v9"></path>
+                <path d="M6 8a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v10a6 6 0 0 0 6 6h4a6 6 0 0 0 6-6v-9"></path>
+              </svg>
+            </div>
+
           </div>
           <div class="preview-zone" *ngIf="photos['4']">
             <img [src]="photos['4']" alt="Main gauche (Arrière)" class="preview-img">
