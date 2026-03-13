@@ -1,62 +1,80 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-photo-analysis',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   template: `
     <div class="analysis-container">
       <header class="a-header">
-        <button class="back-btn" routerLink="/auth">
+        <button class="back-btn" (click)="goBack()">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
         </button>
-        <span class="header-title">Analyse par photo</span>
+        <span class="header-title">Analyse des mains</span>
       </header>
+
+      <div class="subtitle-container">
+        <p>Veuillez prendre en photo vos mains en suivant les indications ci-dessous.</p>
+      </div>
       
-      <div class="hand-map-hero">
-        <img src="/assets/images/hand.png" alt="Hand illustration" class="bg-hand-img" onerror="this.src='https://images.unsplash.com/photo-1616858599423-7db4c8fb232a?w=500&auto=format&fit=crop&q=60'">
-
-        <div class="callout callout-tl callout-green">
-          <div class="callout-box">
-            <div class="callout-title">Bout des doigts</div>
-            <div class="callout-value green-text">10%</div>
+      <div class="photo-grid">
+        <!-- Main droite (Avant) -->
+        <div class="photo-case">
+          <p class="case-label">Main droite (Avant)</p>
+          <div class="upload-zone" (click)="triggerFileInput('file-1')" *ngIf="!photos['1']">
+            <svg width="32" height="32" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
           </div>
-          <div class="connector-line"></div>
-          <div class="connector-dot"></div>
+          <div class="preview-zone" *ngIf="photos['1']">
+            <img [src]="photos['1']" alt="Main droite (Avant)" class="preview-img">
+            <button class="btn-retake" (click)="triggerFileInput('file-1')">Reprendre</button>
+          </div>
+          <input type="file" id="file-1" accept="image/*" capture="environment" class="hidden-input" (change)="onFileSelected($event, '1')">
         </div>
 
-        <div class="callout callout-bl callout-orange">
-          <div class="callout-box">
-            <div class="callout-title">Dos de la main</div>
-            <div class="callout-value orange-text">50%</div>
+        <!-- Main droite (Arrière) -->
+        <div class="photo-case">
+          <p class="case-label">Main droite (Arrière)</p>
+          <div class="upload-zone" (click)="triggerFileInput('file-2')" *ngIf="!photos['2']">
+             <svg width="32" height="32" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
           </div>
-          <div class="connector-line"></div>
-          <div class="connector-dot"></div>
+          <div class="preview-zone" *ngIf="photos['2']">
+            <img [src]="photos['2']" alt="Main droite (Arrière)" class="preview-img">
+            <button class="btn-retake" (click)="triggerFileInput('file-2')">Reprendre</button>
+          </div>
+          <input type="file" id="file-2" accept="image/*" capture="environment" class="hidden-input" (change)="onFileSelected($event, '2')">
         </div>
 
-        <div class="callout callout-mr callout-red">
-          <div class="callout-box">
-            <div class="callout-title">Doigts</div>
-            <div class="callout-value red-text">83%</div>
+        <!-- Main gauche (Avant) -->
+        <div class="photo-case">
+          <p class="case-label">Main gauche (Avant)</p>
+          <div class="upload-zone" (click)="triggerFileInput('file-3')" *ngIf="!photos['3']">
+             <svg width="32" height="32" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
           </div>
-          <div class="connector-line"></div>
-          <div class="connector-dot"></div>
+          <div class="preview-zone" *ngIf="photos['3']">
+            <img [src]="photos['3']" alt="Main gauche (Avant)" class="preview-img">
+            <button class="btn-retake" (click)="triggerFileInput('file-3')">Reprendre</button>
+          </div>
+          <input type="file" id="file-3" accept="image/*" capture="environment" class="hidden-input" (change)="onFileSelected($event, '3')">
         </div>
 
-        <div class="callout callout-br callout-green">
-          <div class="callout-box">
-            <div class="callout-title">Poignet</div>
-            <div class="callout-value green-text">5%</div>
+        <!-- Main gauche (Arrière) -->
+        <div class="photo-case">
+          <p class="case-label">Main gauche (Arrière)</p>
+          <div class="upload-zone" (click)="triggerFileInput('file-4')" *ngIf="!photos['4']">
+             <svg width="32" height="32" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
           </div>
-          <div class="connector-line"></div>
-          <div class="connector-dot"></div>
+          <div class="preview-zone" *ngIf="photos['4']">
+            <img [src]="photos['4']" alt="Main gauche (Arrière)" class="preview-img">
+            <button class="btn-retake" (click)="triggerFileInput('file-4')">Reprendre</button>
+          </div>
+          <input type="file" id="file-4" accept="image/*" capture="environment" class="hidden-input" (change)="onFileSelected($event, '4')">
         </div>
       </div>
 
       <div class="actions" style="margin-top: 40px; padding: 0 24px;">
-        <button class="btn-cta-green" routerLink="/questionnaire-flash">Continuer le bilan</button>
+        <button class="btn-cta-green" [disabled]="!hasAtLeastOnePhoto()" [class.disabled]="!hasAtLeastOnePhoto()" (click)="finish()">Terminer</button>
       </div>
     </div>
   `,
@@ -64,72 +82,159 @@ import { RouterLink } from '@angular/router';
     .analysis-container {
       display: flex;
       flex-direction: column;
-      min-height: 100%;
+      min-height: 100vh;
       background-color: #F8F9FA;
       padding-top: 16px;
       padding-bottom: 40px;
     }
-    .a-header { display: flex; align-items: center; padding: 0 24px; margin-bottom: 24px; }
+    .a-header { display: flex; align-items: center; padding: 0 24px; margin-bottom: 12px; }
     .back-btn { background: none; border: none; padding: 0; margin-right: 16px; color: var(--primary-color, #00af6c); cursor: pointer; }
-    .header-title { font-family: 'Rethink Sans', sans-serif; font-weight: 700; font-size: 18px; color: var(--primary-color, #00af6c); }
+    .header-title { font-family: 'Rethink Sans', sans-serif; font-weight: 700; font-size: 18px; color: #1a202c; }
     
-    .hand-map-hero {
-      position: relative;
-      width: 100%;
-      height: 520px;
+    .subtitle-container {
+      padding: 0 24px;
+      margin-bottom: 24px;
+    }
+    .subtitle-container p {
+      font-family: 'Rethink Sans', sans-serif;
+      font-size: 14px;
+      color: #718096;
+      line-height: 1.5;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 0 24px;
+    }
+
+    .photo-case {
       display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .case-label {
+      font-family: 'Rethink Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .upload-zone {
+      width: 100%;
+      aspect-ratio: 1;
+      background: white;
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
       justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .upload-zone:active {
+      background: #f1f5f9;
+    }
+
+    .preview-zone {
+      width: 100%;
+      aspect-ratio: 1;
+      position: relative;
+      border-radius: 12px;
       overflow: hidden;
-      margin-top: 10px;
+      border: 1px solid #e2e8f0;
     }
-    
-    .bg-hand-img {
+
+    .preview-img {
+      width: 100%;
       height: 100%;
-      width: auto;
-      max-width: 100%;
-      object-fit: contain;
-      object-position: center;
+      object-fit: cover;
     }
 
-    .callout { position: absolute; z-index: 10; }
-    .callout-box { background: white; padding: 10px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; border-radius: 4px; }
-    .callout-title { font-family: 'Rethink Sans', sans-serif; font-weight: 500; font-size: 12px; color: #444; margin-bottom: 4px; white-space: nowrap; }
-    .callout-value { font-family: 'Rethink Sans', sans-serif; font-weight: 700; font-size: 20px; }
+    .btn-retake {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      color: #4a5568;
+      border: none;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-family: 'Rethink Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
 
-    /* Colors */
-    .callout-green .callout-box { border: 2px solid #2ECC71; }
-    .green-text { color: #2ECC71; }
-    
-    .callout-orange .callout-box { border: 2px solid #F39C12; }
-    .orange-text { color: #F39C12; }
-    
-    .callout-red .callout-box { border: 2px solid #E74C3C; }
-    .red-text { color: #E74C3C; }
+    .hidden-input {
+      display: none;
+    }
 
-    .connector-line { position: absolute; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-    .connector-dot { position: absolute; width: 8px; height: 8px; background: white; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-
-    /* Bout des doigts */
-    .callout-tl { top: 12%; left: 4%; transform: scale(0.9); }
-    .callout-tl .connector-line { height: 2px; width: 45px; top: 50%; left: 100%; }
-    .callout-tl .connector-dot { top: calc(50% - 3px); left: calc(100% + 40px); }
-
-    /* Dos de la main */
-    .callout-bl { bottom: 25%; left: 4%; transform: scale(0.9); }
-    .callout-bl .connector-line { height: 2px; width: 55px; top: 50%; left: 100%; }
-    .callout-bl .connector-dot { top: calc(50% - 3px); left: calc(100% + 50px); }
-
-    /* Doigts */
-    .callout-mr { top: 35%; right: 4%; transform: scale(0.9); }
-    .callout-mr .connector-line { height: 2px; width: 40px; top: 50%; right: 100%; }
-    .callout-mr .connector-dot { top: calc(50% - 3px); right: calc(100% + 35px); }
-
-    /* Poignet */
-    .callout-br { bottom: 10%; right: 4%; transform: scale(0.9); }
-    .callout-br .connector-line { height: 2px; width: 50px; top: 50%; right: 100%; }
-    .callout-br .connector-dot { top: calc(50% - 3px); right: calc(100% + 45px); }
-
-    .btn-cta-green { background: var(--primary-color, #00af6c); color: white; border: none; padding: 16px 32px; border-radius: 30px; font-family: 'Rethink Sans', sans-serif; font-weight: 700; font-size: 16px; width: 100%; cursor: pointer; display: block; text-align: center; text-decoration: none; }
+    .btn-cta-green { 
+      background: var(--primary-color, #00af6c); 
+      color: white; 
+      border: none; 
+      padding: 16px 32px; 
+      border-radius: 30px; 
+      font-family: 'Rethink Sans', sans-serif; 
+      font-weight: 700; 
+      font-size: 16px; 
+      width: 100%; 
+      cursor: pointer; 
+      display: block; 
+      text-align: center; 
+      text-decoration: none; 
+      transition: background 0.3s;
+    }
+    .btn-cta-green.disabled {
+      background: #a0aec0;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
   `]
 })
-export class PhotoAnalysisComponent {}
+export class PhotoAnalysisComponent {
+  photos: { [key: string]: string | null } = {
+    '1': null,
+    '2': null,
+    '3': null,
+    '4': null
+  };
+
+  constructor(private router: Router) {}
+
+  goBack() {
+    this.router.navigate(['/auth']);
+  }
+
+  triggerFileInput(id: string) {
+    document.getElementById(id)?.click();
+  }
+
+  onFileSelected(event: any, key: string) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.photos[key] = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  hasAtLeastOnePhoto(): boolean {
+    return Object.values(this.photos).some(photo => photo !== null);
+  }
+
+  finish() {
+    if (this.hasAtLeastOnePhoto()) {
+      this.router.navigate(['/questionnaire-flash']);
+    }
+  }
+}

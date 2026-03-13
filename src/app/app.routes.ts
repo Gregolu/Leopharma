@@ -14,7 +14,14 @@ import { DossierComponent } from './pages/dossier/dossier.component';
 import { ShareComponent } from './pages/share/share.component';
 import { MonitoringComponent } from './pages/monitoring/monitoring.component';
 
+import { NetworkComponent } from './pages/network/network.component';
+import { NetworkMapComponent } from './pages/network-map/network-map.component';
+import { NetworkProfileComponent } from './pages/network-profile/network-profile.component';
+
 export const routes: Routes = [
+  { path: 'network', component: NetworkComponent },
+  { path: 'network-map', component: NetworkMapComponent },
+  { path: 'network-profile/:id', component: NetworkProfileComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'questionnaire-flash', component: QuestionnaireFlashComponent },

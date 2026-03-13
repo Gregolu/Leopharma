@@ -9,20 +9,22 @@ import { Router } from '@angular/router';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="q-wrapper">
-      <header class="q-header black-header">
-        <button class="back-btn" (click)="goBack()">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
-        </button>
-        <div class="header-title">Questionnaire Flash</div>
-        <div style="width:24px"></div>
-      </header>
+      <div class="green-header-area">
+        <header class="app-header">
+          <button class="back-btn" (click)="goBack()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
+          </button>
+          <div class="header-title">Questionnaire Flash</div>
+          <div style="width:24px"></div>
+        </header>
 
-      <div class="q-content">
-        
-        <div class="intro-section">
-          <h1 class="intro-title">Mes mains sont-elles à risque ?</h1>
-          <p class="intro-text">L’eczéma chronique des mains touche environ 4,9 % de la population adulte en France.</p>
+        <div class="intro-section" style="background:transparent; padding: 0px 20px 20px 20px; text-align: center;">
+          <h1 class="intro-title" style="color:white;">Mes mains sont-elles à risque ?</h1>
+          <p class="intro-text" style="color:white;">L’eczéma chronique des mains touche environ 4,9 % de la population adulte en France.</p>
         </div>
+      </div>
+
+      <div class="q-content" style="margin-top: 0px; position:relative; z-index:20; background: white;">
 
         <div class="question-block">
           <h2 class="step-title">1. Lésions sur les mains et poignets uniquement ?</h2>
@@ -98,16 +100,22 @@ import { Router } from '@angular/router';
     </div>
   `,
   styles: [`
+
+    .green-header-area { background: var(--primary-color, #00af6c); color: white; padding-bottom: 20px; border-radius: 0 0 24px 24px; position: relative; z-index: 10; }
+    .app-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; padding-top: 50px; background: transparent; }
+    .header-title { font-weight: 700; font-size: 1.1rem; color: white; flex:1; text-align:center; }
+    .back-btn { background: none; border: none; padding: 0; display: flex; align-items: center; cursor: pointer; color: white; margin-left: -4px;}
+
     .q-wrapper { background: #FFFFFF;  display: flex; flex-direction: column; font-family: 'Rethink Sans', sans-serif; overflow: hidden; }
     
-    .q-header.black-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: #FFFFFF; color: #111; z-index: 10; }
-    .header-title { font-weight: 800; font-size: 16px; text-align: center; color: #111; }
-    .back-btn { background: none; border: none; color: #111; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; margin-left: -4px;}
+    
+    
+    
     
     .q-content { flex: 1; padding: 16px 20px 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
     
-    .intro-section { margin: -16px -20px 12px -20px; text-align: center; background: #111; padding: 32px 20px 20px; border-radius: 0; }
-    .intro-title { font-size: 20px; font-weight: 800; color: #FFFFFF; margin: 0 0 8px; line-height: 1.2; text-align: center;}
+    
+    .intro-title { font-size: 20px; font-weight: 800; color: #FFFFFF; margin: 0 0 8px; line-height: 1.2; text-align: center; }
     .intro-text { font-size: 14px; color: #F3F4F6; margin: 0; line-height: 1.4; font-weight: 500; text-align: center;}
 
     .question-block { display: flex; flex-direction: column; gap: 8px; padding-bottom: 16px; }

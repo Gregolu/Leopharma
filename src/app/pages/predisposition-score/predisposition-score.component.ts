@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { Location, CommonModule } from '@angular/common';
+import { PatientStateService } from '../../services/patient-state.service';
 
 @Component({
   selector: 'app-predisposition-score',
@@ -109,6 +110,7 @@ import { Location, CommonModule } from '@angular/common';
 export class PredispositionScoreComponent {
   location = inject(Location);
   router = inject(Router);
+  patientService = inject(PatientStateService);
 
   score = 15; 
 
@@ -116,6 +118,9 @@ export class PredispositionScoreComponent {
     const nav = this.router.getCurrentNavigation();
     if (nav?.extras.state && typeof nav.extras.state['score'] === 'number') {
       this.score = nav.extras.state['score'];
+      this.patientService.updatePredisposition(this.score);
+    } else {
+      this.score = this.patientService.stateSubject.getValue().predispositionScore;
     }
   }
 

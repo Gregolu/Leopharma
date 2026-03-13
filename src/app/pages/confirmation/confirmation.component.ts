@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { PatientStateService } from '../../services/patient-state.service';
 import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
 
 @Component({
@@ -35,24 +36,37 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
                   a 15.9155 15.9155 0 0 1 0 -31.831"
               />
               <path class="circle-progress"
-                stroke-dasharray="100, 100"
+                [attr.stroke-dasharray]="percentage + ', 100'"
                 d="M18 2.0845
                   a 15.9155 15.9155 0 0 1 0 31.831
                   a 15.9155 15.9155 0 0 1 0 -31.831"
               />
             </svg>
-            <div class="percentage">100%</div>
+            <div class="percentage">{{ percentage }}%</div>
           </div>
         </div>
 
-        <h1 class="conf-title" style="color:white;">Félicitations !</h1>
+                <h1 class="conf-title" style="color:white;">
+          {{ percentage === 100 ? 'Félicitations !' : 'Merci !' }}
+        </h1>
         
-        <p class="conf-desc">
-          Vous avez complété tous les questionnaires.
-        </p>
-        <p class="conf-desc-strong">
-          <strong>Votre dossier patient<br/>est maintenant complet.</strong>
-        </p>
+        <div *ngIf="percentage === 100">
+          <p class="conf-desc">
+            Vous avez complété tous les questionnaires.
+          </p>
+          <p class="conf-desc-strong">
+            <strong>Votre dossier patient<br/>est maintenant complet.</strong>
+          </p>
+        </div>
+        
+        <div *ngIf="percentage < 100">
+          <p class="conf-desc">
+            Votre réponse a bien été ajoutée.
+          </p>
+          <p class="conf-desc-strong">
+            <strong>D'autres modules sont disponibles<br/>pour compléter votre dossier.</strong>
+          </p>
+        </div>
 
         <div class="actions">
           <button class="primary-btn" (click)="goTo('/dossier')">Partager / Télécharger mon dossier</button>
@@ -245,6 +259,12 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
   `]
 })
 export class ConfirmationComponent {
+  patientStateService = inject(PatientStateService);
+  
+  get percentage(): number {
+    return this.patientStateService.getCompletionStats().percentage;
+  }
+
   router = inject(Router);
   location = inject(Location);
 
@@ -253,6 +273,6 @@ export class ConfirmationComponent {
   }
 
   goTo(route: string) {
-    this.router.navigate([route]);
+    this.router.navigateByUrl(route);
   }
 }

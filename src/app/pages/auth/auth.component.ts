@@ -131,18 +131,19 @@ import { Router } from '@angular/router';
         </div>
 
         <!-- Success Section (Post-Auth) -->
-        <div class="success-section" *ngIf="activeTab === 'success'">
-          <div class="success-icon">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
+        <div class="success-section" *ngIf="activeTab === 'success'" style="position:relative; min-height: 60vh;">
+          <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); opacity:0.05; width:200px; height:200px; pointer-events:none; z-index:0; display:flex; align-items:center; justify-content:center;">
+             <img src="/assets/images/icone-manuderma@2x.png" style="width:150px; height:auto;"/>
           </div>
-          <h1 class="success-title">Votre compte a été<br><strong>créé avec succès</strong></h1>
-          <p class="success-desc">Pour commencer votre suivi, nous avons préparé un questionnaire rapide pour vous.</p>
-          
-          <button class="submit-btn full" (click)="goToQuestionnaire()">Compléter mon bilan</button>
+          <div style="position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; ">
+              <div class="success-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <h1 class="success-title" style="text-align:center;">Votre compte a été<br><strong>créé avec succès</strong></h1>
+              <p class="success-desc" style="text-align:center;">Pour commencer votre suivi, nous avons préparé un questionnaire rapide pour vous.</p>
+              <button class="submit-btn full" (click)="goToQuestionnaire()" style="margin: 0 auto; min-width: 250px;">Compléter mon bilan</button>
+          </div>
         </div>
-
       </div>
     </div>
   `,

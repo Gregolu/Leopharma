@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
+import { PatientStateService, PatientState } from '../../services/patient-state.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,33 +12,39 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
   template: `
     <div class="dashboard-wrapper">
       <!-- Health overview Header -->
-      <header class="header-banner">
-        <div class="header-top">
-          <div class="icon-btn" (click)="goTo('/notifications')" style="cursor:pointer;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+      <header class="header-banner" style="padding-top: 50px; padding-bottom: 50px;">
+        <div class="header-top" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;">
+          <div class="icon-btn" (click)="goTo('/notifications')" style="cursor:pointer; position: relative; color: white;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
             <span class="badge"></span>
           </div>
-          <h1 class="header-title">Aperçu général</h1>
-      
+          
+          <h1 class="header-title" style="margin: 0; font-size: 20px; font-weight: 700; color: white;">Vue générale</h1>
+          
           <div class="profile-icon" (click)="goTo('/profile')" style="cursor:pointer;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
           </div>
         </div>
-        <div class="hello-text" style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom: 20px;">
-          <img src="assets/images/icone-manuderma@2x.png" alt="Hand" style="width:40px; height:40px; object-fit:contain; filter: brightness(0) invert(1);">
-          <h2>Bonjour !</h2>
-        </div>
         
+        <div style="display: flex; align-items: center; justify-content: space-between; position: relative;">
+          <h2 style="margin: 0; font-size: 28px; font-weight: 700; color: white;">Bonjour !</h2>
+          <!-- Removed hardcoded image name to match visuel-main, previously: icone-manuderma@2x.png -->
+          <img src="assets/images/hand-dashboard-visual.png" alt="Hand" style="width: 120px; height: auto; object-fit: contain; filter: brightness(0) invert(1); position: absolute; right: -24px; top: 50%; transform: translateY(-50%);" />
+        </div>
       </header>
 
-      <div class="dashboard-content">
+      <div class="dashboard-content" style="position: relative; z-index: 10; margin-top: -30px;">
 
         <!-- Update File Section -->
         <section class="section-block">
           <div class="update-card" (click)="goTo('/questionnaire')">
             <div class="update-info">
-              <span class="update-number">5</span>
-              <span class="update-desc">Vous avez des questionnaires à compléter.</span>
+              <span class="update-number" style="font-size: 28px;">
+                <ng-container *ngIf="remainingQuestionnaires > 0">{{ remainingQuestionnaires }} </ng-container>
+                <span *ngIf="remainingQuestionnaires === 0" style="color: #00af6c; font-size: 24px;">Félicitations !</span>
+              </span>
+              <span class="update-desc" *ngIf="remainingQuestionnaires > 0">Vous avez des questionnaires à compléter.</span>
+              <span class="update-desc" *ngIf="remainingQuestionnaires === 0">Vous avez complété l’ensemble des questionnaires.</span>
             </div>
             <div class="update-icon">
               <!-- Check-list icon -->
@@ -45,7 +53,7 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
               </svg>
             </div>
-            <div class="notification-dot"></div>
+            <div class="notification-dot" *ngIf="remainingQuestionnaires > 0"></div>
           </div>
           <button class="primary-btn center-btn mt-3" style="background:#111; color:white; border:none; width:100%; border-radius:30px; font-weight:700; padding:16px; margin-top:20px; cursor:pointer;" (click)="goTo('/questionnaire')">Mettre à jour mon dossier</button>
         </section>
@@ -56,7 +64,7 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
       
           
           <div class="score-slider">
-            <div class="slider-track" style="background: #EAEAEA;"><div class="slider-thumb" style="border-color: #00af6c !important; border: 4px solid #00af6c; left: 77%;"></div></div>
+            <div class="slider-track" style="background: #EAEAEA;"><div class="slider-thumb" [style.left.%]="predispositionScore" style="border: 4px solid;" [style.borderColor]="getScoreColor(predispositionScore)"></div></div>
             <div class="slider-labels">
               <span class="label" style="flex:1; color:#68D391;">Faible<br/>prédisposition</span>
               <span class="label" style="flex:1; color:#DD6B20;">Prédisposition<br/>possible</span>
@@ -77,13 +85,13 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
                     a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
                 <path class="circle-progress"
-                  stroke-dasharray="80, 100"
+                  [attr.stroke-dasharray]="predispositionScore + ', 100'"
                   d="M18 2.0845
                     a 15.9155 15.9155 0 0 1 0 31.831
                     a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
               </svg>
-              <div class="score-value">80</div>
+              <div class="score-value">{{ predispositionScore }}</div>
               <div class="thumb-on-circle"></div>
             </div>
           </div>
@@ -157,8 +165,38 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
 
         </section>
 
+                      <section class="section-block mt-4" style="margin-top: 24px; padding: 0 20px;">
+          <div class="clinical-studies-home-section" style="margin-bottom: 2rem;">
+            <h2 style="font-size: 1.4rem; color: #333; margin-bottom: 1rem; font-weight: 800;">Aider à faire avancer <span style="color:var(--primary-color);">la science</span></h2>
+            
+            <div style="display:flex; flex-direction:row; gap:1rem; margin-bottom: 1.5rem; align-items:center;">
+              <p style="font-size: 0.9rem; color: #555; line-height: 1.4; margin: 0; flex: 1;">
+                Votre expérience est précieuse. En participant à une étude clinique, vous contribuez à une meilleure compréhension de la maladie de l'eczéma et faites progresser la recherche.
+              </p>
+              <div style="width:100px; height:100px; border-radius:12px; overflow:hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0;">
+                <img src="/assets/images/labo.png" alt="Scientifique" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.src='https://images.unsplash.com/photo-1584308666744-24d5e478546f?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3'" />
+              </div>
+            </div>
+
+            <div class="studies-list" style="display:flex; flex-direction:column; gap:12px;">
+              <!-- Single Study for compact view -->
+              <div class="study-card" style="background:#fff; border-radius:16px; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+                <div style="display:flex; align-items:center; gap:12px; flex:1;">
+                  <div style="width:10px; height:10px; border-radius:50%; background:#e74c3c;"></div>
+                  <div>
+                    <h3 style="margin:0; font-size:14px; font-weight:800; color:#333;">Étude clinique</h3>
+                    <p style="margin:0; font-size:12px; color:#666; font-weight:500;">Étude Atopia-CARE</p>
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <button style="background:rgba(0,175,108,0.1); color:var(--primary-color, #00af6c); border:none; padding:8px 16px; border-radius:20px; font-weight:700; font-size:13px; cursor:pointer;" (click)="goTo('/clinical-study')">Participer</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
-      
       <app-bottom-nav></app-bottom-nav>
     </div>
   `,
@@ -431,7 +469,7 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
 
     .circle-progress {
       fill: none;
-      stroke: #FF5A5A;
+      /* stroke set dynamically */
       stroke-width: 3.5;
       stroke-linecap: round;
       animation: progressDash 1.5s ease-out forwards;
@@ -608,11 +646,43 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
     }
   `]
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit, OnDestroy {
   
   router = inject(Router);
+  patientService = inject(PatientStateService);
+  
+  predispositionScore = 80;
+  remainingQuestionnaires = 0;
+  eczemaScore = 67;
+
+  getScoreColor(score: number): string {
+    if (score < 40) return '#68D391';
+    if (score < 70) return '#DD6B20';
+    return '#E53E3E';
+  }
+  sub!: Subscription;
+
+  ngOnInit() {
+    this.sub = this.patientService.state$.subscribe(state => {
+      this.predispositionScore = state.predispositionScore;
+      this.eczemaScore = state.eczemaScore;
+      
+      const steps = ['photo', 'scan', 'anamnese', 'exposition', 'symptomes', 'impact', 'qvt', 'stigmatisation', 'traitement'];
+      let answered = 0;
+      steps.forEach(stepId => {
+         if (state.questionnaires && state.questionnaires[stepId] && state.questionnaires[stepId].length > 0) {
+            answered++;
+         }
+      });
+      this.remainingQuestionnaires = this.patientService.getCompletionStats().remainingQuestionnaires;
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.sub) this.sub.unsubscribe();
+  }
 
   goTo(route: string) {
-    this.router.navigate([route]);
+    this.router.navigateByUrl(route);
   }
 }

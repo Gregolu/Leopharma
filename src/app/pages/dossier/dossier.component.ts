@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { PatientStateService } from '../../services/patient-state.service';
+import { PdfExportService } from '../../services/pdf-export.service';
 
 @Component({
   selector: 'app-dossier',
@@ -30,7 +32,7 @@ import { Router } from '@angular/router';
         <div class="top-flex">
           <div class="flex-left">
             <h2 class="title-complete">Votre dossier est complet</h2>
-            <button class="action-btn-share" (click)="goToShare()">
+            <button class="action-btn-share" (click)="goTo('/share')">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
               Télécharger et partager
             </button>
@@ -39,90 +41,84 @@ import { Router } from '@angular/router';
             <div class="gauge-container">
               <svg width="100" height="100" viewBox="0 0 120 120">
                 <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="8"></circle>
-                <circle cx="60" cy="60" r="54" fill="none" stroke="white" stroke-width="8" stroke-dasharray="339.29" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 60 60)"></circle>
-                <text x="60" y="70" text-anchor="middle" font-size="28" font-weight="800" fill="white">100%</text>
+                <circle cx="60" cy="60" r="54" fill="none" stroke="white" stroke-width="8" stroke-dasharray="339.29" [style.stroke-dashoffset]="getDashoffset()" stroke-linecap="round" transform="rotate(-90 60 60)"></circle>
+                <text x="60" y="70" text-anchor="middle" font-size="28" font-weight="800" fill="white">{{ getCompletionStats().percentage }}%</text>
               </svg>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="dossier-body">
-          <!-- Accordion Header -->
-        <div class="category-header" (click)="isAnalyseOpen = !isAnalyseOpen">
-          <h2 style="margin: 0; font-size: 16px; font-weight: 800; color: white;">QUESTIONNAIRES</h2>
+      <div class="dossier-body" style="padding: 0; background: #F9FAFB; padding-bottom: 20px; position:relative; z-index:20; margin-top:-20px; border-radius: 20px 20px 0 0; overflow:hidden;">
+        <!-- Accordion Header -->
+        <div class="category-header" (click)="isAnalyseOpen = !isAnalyseOpen" style="background: black; color: white; display:flex; justify-content: space-between; align-items:center; padding: 16px 20px; font-weight: bold; font-size: 15px; text-transform: uppercase;">
+          <span style="font-size: 15px; font-weight: bold; color: white; text-transform: uppercase;">ANALYSE</span>
           <svg [style.transform]="isAnalyseOpen ? 'rotate(180deg)' : 'rotate(0deg)'" style="transition:0.3s; color: white;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>                          
         </div>
         
-        <div class="list-section" *ngIf="isAnalyseOpen">                                                                                       
-          <div class="list-item" (click)="goTo('/questionnaire-detail/analyse-mains')">                                                                                     
-            <div class="item-icon-wrap">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>                                                                                           
-            </div>
-            <div class="item-content">
-              <h3 style="color: white; font-size: 16px; font-weight: 700;">Analyse des mains</h3>
-            </div>
-            <div class="item-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>                                    
-            </div>
-          </div>
-          
-          <div class="list-item" (click)="goTo('/questionnaire-detail/scan-produit')">                                                                                      
-            <div class="item-icon-wrap">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="12" x2="17" y2="12"></line></svg>                   
-            </div>
-            <div class="item-content">
-              <h3 style="color: white; font-size: 16px; font-weight: 700;">Scan du produit</h3>
-            </div>
-            <div class="item-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>                                    
-            </div>
-          </div>
+                
+        
+        <div class="list-section" *ngIf="isAnalyseOpen" style="padding: 0 20px; padding-bottom: 20px;">
+          <div class="items-wrapper" style="background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; padding: 4px 12px;">
+            <div class="list-item" *ngFor="let step of getAllSteps(); let last = last" (click)="goTo('/questionnaire-detail/' + step.id)" [style.border-bottom]="last ? 'none' : '1px solid #f1f1f1'" style="padding: 16px 4px; display: flex; align-items: center; cursor: pointer;">
+              
+              <div class="item-icon-wrap" style="display:flex; align-items:center; color: #2c5e53;">
+                <div [ngStyle]="{'background-color': isCompleted(step.id) ? '#2ECC71' : '#E74C3C'}" style="width: 12px; height: 12px; border-radius: 50%;"></div>
+                
+                <ng-container [ngSwitch]="step.id">
+                  <svg *ngSwitchCase="'photo'" style="margin-left: 12px;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                  <svg *ngSwitchCase="'scan'" style="margin-left: 12px;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="12" x2="17" y2="12"></line></svg>
+                  <svg *ngSwitchDefault style="margin-left: 12px;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </ng-container>
+              </div>
 
-          <div class="list-item" (click)="goTo('/questionnaire-detail/autres')">
-            <div class="item-icon-wrap">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>                                                         
-            </div>
-            <div class="item-content">
-              <h3 style="color: white; font-size: 16px; font-weight: 700;">Autres questionnaires</h3>
-            </div>
-            <div class="item-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>                                    
+              <div class="item-content" style="flex:1; margin-left: 12px;">
+                <h3 style="font-size: 14px; margin: 0; color: #333; font-weight: 500;">{{ step.title }}</h3>
+                </div>
+
+              <div class="item-arrow" style="display:flex; align-items:center; justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              </div>
+              
             </div>
           </div>
         </div>
-      </div>
-      
-      <div class="clinical-studies-section" style="margin-top: 24px;">
-        <h2 style="font-size: 16px; font-weight: 800; color: #333; margin-bottom: 16px; padding: 0 20px;">Études cliniques et suivis</h2>
-        <div class="list-section" style="padding: 0 20px;">
-          <div class="list-item clinical-item" (click)="goTo('/clinical-study')">
-            <div class="item-icon-wrap" style="background:#fce4ec; border-radius:50%; padding:8px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e91e63" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-9 5 18 3-9h5"></path></svg>
-            </div>
-            <div class="item-content">
-              <h3 style="color: #333; margin-bottom: 4px;">Suivi thérapeutique</h3>
-              <p style="margin:0; font-size:13px; color:#666;">Insuffisance cardiaque précoce</p>
-            </div>
-            <div class="item-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            </div>
-          </div>
 
-          <div class="list-item clinical-item" (click)="goTo('/clinical-study')">
-            <div class="item-icon-wrap" style="background:#ede7f6; border-radius:50%; padding:8px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#673ab7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <div style="height: 1px; background: #e0e0e0; margin: 24px 20px;"></div>
+        <div class="clinical-studies-section" style="margin-top: 10px; margin-bottom: 24px;">
+          <div class="list-section" style="padding: 0 20px; display:flex; flex-direction:column; gap:12px;">
+            
+            <div class="list-item clinical-item" (click)="goTo('/clinical-study')" style="background:white; border-radius:16px; padding:16px; display:flex; align-items:center; box-shadow:0 4px 12px rgba(0,0,0,0.05); gap: 16px;">
+              <div class="item-icon-wrap" style="display:flex; align-items:center;">
+                <div style="width:12px; height:12px; border-radius:50%; background:#d8839d;"></div>
+                <svg style="margin-left: 12px; color: #333;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+              </div>
+              <div class="item-content" style="flex:1;">
+                <h3 style="margin:0; font-size:14px; font-weight:500; color:#333; margin-bottom:4px;">Suivi thérapeutique</h3>
+                <p style="margin:0; font-size:13px; color:#666;">Biothérapie (ex: Dupilumab)</p>
+              </div>
+              <div class="item-arrow" style="display:flex; align-items:center; justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              </div>
             </div>
-            <div class="item-content">
-              <h3 style="color: #333; margin-bottom: 4px;">Étude clinique</h3>
-              <p style="margin:0; font-size:13px; color:#666;">Étude REVEAL</p>
+
+            <div class="list-item clinical-item" (click)="goTo('/clinical-study')" style="background:white; border-radius:16px; padding:16px; display:flex; align-items:center; box-shadow:0 4px 12px rgba(0,0,0,0.05); gap: 16px;">
+              <div class="item-icon-wrap" style="display:flex; align-items:center;">
+                <div style="width:12px; height:12px; border-radius:50%; background:#ff9500;"></div>
+                <svg style="margin-left: 12px; color: #333;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              </div>
+              <div class="item-content" style="flex:1;">
+                <h3 style="margin:0; font-size:14px; font-weight:500; color:#333; margin-bottom:4px;">Étude clinique</h3>
+                <p style="margin:0; font-size:13px; color:#666;">Étude Atopia-CARE</p>
+              </div>
+              <div class="item-arrow" style="display:flex; align-items:center; justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              </div>
             </div>
-            <div class="item-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            </div>
+            
           </div>
         </div>
-      </div>
+
       <div class="spacer"></div>
       <app-bottom-nav></app-bottom-nav>
     </div>
@@ -249,22 +245,11 @@ import { Router } from '@angular/router';
     }
 
     .dossier-body {
-      background: #111;
       width: 100%;
       margin: 0;
-      padding-bottom: 24px;
-      border-radius: 0 0 20px 20px;
-      margin-top: -20px;
-      margin-bottom: 20px;
     }
     .category-header {
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       cursor: pointer;
-      text-transform: uppercase;
-      padding-top: 36px;
     }
 
     .list-section {
@@ -332,6 +317,61 @@ export class DossierComponent {
 
   router = inject(Router);
   location = inject(Location);
+  patientStateService = inject(PatientStateService);
+  pdfExportService = inject(PdfExportService);
+
+    // Added methods
+  exportPdf() {
+    this.pdfExportService.generatePdf();
+  }
+
+  
+
+  getAllSteps() {
+    return [
+      { id: 'photo', title: 'Analyse par photo', type: 'internal', index: 0 },
+      { id: 'scan', title: 'Scan Produit', type: 'internal', index: 1 },
+      { id: 'anamnese', title: 'Anamnèse et histoire de la maladie', type: 'external', index: 2 },
+      { id: 'exposition', title: 'Exposition et facteurs aggravants', type: 'external', index: 3 },
+      { id: 'symptomes', title: 'Symptômes actuels et localisation', type: 'external', index: 4 },
+      { id: 'impact', title: 'Impact fonctionnel des mains', type: 'external', index: 5 },
+      { id: 'qvt', title: 'Qualité de vie émotionnelle', type: 'external', index: 6 },
+      { id: 'stigmatisation', title: 'Stigmatisation', type: 'external', index: 7 },
+      { id: 'traitement', title: 'Traitement et prise en charge', type: 'external', index: 8 }
+    ];
+  }
+
+  isCompleted(stepId: string): boolean {
+    const s = this.patientStateService.getCompletionStats();
+    return s.statusMap[stepId] === 'completed';
+  }
+
+  getLastDate(stepId: string): string | null {
+    const s = this.patientStateService.stateSubject.getValue();
+    if (s.questionnaires && s.questionnaires[stepId] && s.questionnaires[stepId].length > 0) {
+      return s.questionnaires[stepId][0].date || null;
+    }
+    return null;
+  }
+
+
+  getCompletionStats() {
+    return this.patientStateService.getCompletionStats();
+  }
+
+  getDashoffset(): number {
+    const stats = this.patientStateService.getCompletionStats();
+    const circumference = 339.29;
+    return circumference - (circumference * stats.percentage) / 100;
+  }
+
+  getStatusColor(key: string): string {
+    const map = this.patientStateService.getCompletionStats().statusMap;
+    const status = map[key] || 'none';
+    if (status === 'completed') return '#2c5e53';
+    if (status === 'partial') return '#f39c12';
+    return '#e74c3c';
+  }
 
   goBack() {
     this.location.back();

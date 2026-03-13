@@ -59,7 +59,7 @@ import { RouterLink } from '@angular/router';
       </div>
 
       <div class="symptoms-section">
-        <h2 class="section-title">Les symptômes fréquents</h2>
+        <h2 class="section-title" style="margin-top: -30px; position: relative; z-index: 10;" style="margin-top: -30px; position: relative; z-index: 10;">Les symptômes fréquents</h2>
         
         <div class="symptom-row">
           <div class="symptom-text">
@@ -103,7 +103,7 @@ import { RouterLink } from '@angular/router';
       </div>
 
       <div class="benefits-section">
-        <h2 class="section-title">Pourquoi utiliser l’application ?</h2>
+        <h2 class="section-title" style="margin-top: -30px; position: relative; z-index: 10;">Pourquoi utiliser l’application ?</h2>
         
         <div class="benefit-card">
           <div class="benefit-icon">
@@ -160,13 +160,13 @@ import { RouterLink } from '@angular/router';
       padding-bottom: 96px;
     }
 
-    .app-header {
+    .app-header { 
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 16px 24px;
       margin-top: 16px;
-    }
+     padding-bottom: 50px !important; }
     
     .logo-box {
       display: flex;

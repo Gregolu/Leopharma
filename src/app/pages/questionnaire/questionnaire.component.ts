@@ -2,6 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { QuestionnaireService } from '../../services/questionnaire.service';
+import { PatientStateService } from '../../services/patient-state.service';
+import { QUESTIONNAIRES } from '../../services/questionnaire-data';
 import { Question, QuestionnaireState } from '../../models/question.model';
 
 interface Marker {
@@ -41,38 +43,70 @@ interface Marker {
       </div>
     </div>
       
-      <main class="question-list-view" style="padding: 0;">
-        <div class="accordion-header" (click)="isListOpen = !isListOpen">
-          <span>À compléter ({{ totalSteps }})</span>
+      
+      
+      <main class="question-list-view" style="padding: 0; background: #F9FAFB; padding-bottom: 20px; position:relative; z-index:20; margin-top:-20px; border-radius: 20px 20px 0 0; overflow:hidden;">
+        <div class="accordion-header" (click)="isListOpen = !isListOpen" style="background: black; color: white; display:flex; justify-content: space-between; align-items:center; padding: 16px 20px; font-weight: bold; font-size: 15px; text-transform: uppercase;">
+          <span>Analyse</span>
           <svg [class.open]="isListOpen" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </div>
 
-        <div class="accordion-body" *ngIf="isListOpen" style="padding: 16px;">
-          <div class="list-item" *ngFor="let step of getAllSteps()" (click)="goToStep(step.index)">
-            <div class="item-icon" [ngClass]="isAnswered(step.index) ? 'green-dot' : 'red-dot'"></div>
-            <div class="item-icon-wrap" style="display:flex; align-items:center; justify-content:center; margin-left:12px; color: #2c5e53;">
-              <ng-container [ngSwitch]="step.index">
-                <svg *ngSwitchCase="0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                <svg *ngSwitchCase="1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="12" x2="17" y2="12"></line></svg>
-                <svg *ngSwitchDefault width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              </ng-container>
-            </div>
-            <div class="item-content" style="flex:1; margin-left: 12px;">
-              <h3 style="font-size: 14px; margin: 0; color: #333; font-weight: 500;">{{ step.title }}</h3>
-            </div>
-            <div class="item-arrow" style="display:flex; align-items:center; justify-content:center;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
-                <path d="M9 18l6-6-6-6"/>
-              </svg>
+        <div class="accordion-body" *ngIf="isListOpen" style="padding: 8px 16px 8px 16px;">
+          <!-- Using a wrapper for all questionnaires -->
+          <div class="items-wrapper" style="background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; padding: 4px 12px;">
+            <div class="list-item" *ngFor="let step of getAllSteps(); let last = last" (click)="handleStepClick(step)" [style.border-bottom]="last ? 'none' : '1px solid #f1f1f1'">
+              <div class="item-icon-wrap" style="display:flex; align-items:center; color: #2c5e53;">
+                <div [ngClass]="isAnswered(step.index) ? 'green-dot' : 'red-dot'"></div>
+                <ng-container [ngSwitch]="step.id">
+                  <svg *ngSwitchCase="'photo'" style="margin-left: 12px;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                  <svg *ngSwitchCase="'scan'" style="margin-left: 12px;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="12" x2="17" y2="12"></line></svg>
+                  <svg *ngSwitchDefault style="margin-left: 12px;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </ng-container>
+              </div>
+              <div class="item-content" style="flex:1; margin-left: 12px;">
+                <h3 style="font-size: 14px; margin: 0; color: #333; font-weight: 500;">{{ step.title }}</h3>
+              </div>
+              <div class="item-arrow" style="display:flex; align-items:center; justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              </div>
             </div>
           </div>
         </div>
-        <div style="padding: 24px;">
+
+        <div style="height: 1px; background: #e0e0e0; margin: 24px 20px;"></div>
+        <div class="clinical-studies-section">
+          
+          <div class="list-section" style="padding: 0 20px; display:flex; flex-direction:column; gap:12px;">
+            <div class="list-item clinical-item" (click)="goToRoute('/clinical-study')" style="background:white; border-radius:16px; padding:16px; display:flex; align-items:center; box-shadow:0 4px 12px rgba(0,0,0,0.05); gap: 16px;">
+              <div class="item-icon-wrap">
+                <div style="width:10px; height:10px; border-radius:50%; background:#d8839d;"></div></div><div class="item-content" style="flex:1;"><h3 style="margin:0; font-size:15px; font-weight:800; color:#333; margin-bottom:4px;">Suivi thérapeutique</h3>
+                <p style="margin:0; font-size:13px; color:#666;">Biothérapie (ex: Dupilumab)</p>
+              </div>
+              <div class="item-arrow">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" style="cursor:pointer;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              </div>
+            </div>
+
+            <div class="list-item clinical-item" (click)="goToRoute('/clinical-study')" style="background:white; border-radius:16px; padding:16px; display:flex; align-items:center; box-shadow:0 4px 12px rgba(0,0,0,0.05); gap: 16px;">
+              <div class="item-icon-wrap">
+                <div style="width:10px; height:10px; border-radius:50%; background:#ff9500;"></div></div><div class="item-content" style="flex:1;"><h3 style="margin:0; font-size:15px; font-weight:800; color:#333; margin-bottom:4px;">Étude clinique</h3>
+                <p style="margin:0; font-size:13px; color:#666;">Étude Atopia-CARE</p>
+              </div>
+              <div class="item-arrow">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" style="cursor:pointer;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding: 32px 24px;">
           <button (click)="goToDossier()" style="width: 100%; padding: 16px; border-radius: 12px; background: #00af6c; color: white; border: none; font-weight: bold; font-size: 16px; cursor: pointer;">Voir mon dossier patient</button>
         </div>
       </main>
+
+
     </div>
   
 <div class="stepper-app-container" *ngIf="viewMode === 'step'">
@@ -112,15 +146,18 @@ interface Marker {
       </div>
 
       <!-- NAV ROW -->
-      <div class="nav-row">
+      <div class="nav-row" style="position: relative; z-index: 10;">
+        <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); opacity: 0.1; z-index: -1; pointer-events: none;">
+          <img src="/assets/images/icone-manuderma@2x.png" width="70" alt="background-logo">
+        </div>
         <button class="nav-btn prev" [style.visibility]="currentStep > 0 ? 'visible' : 'hidden'" (click)="prev()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color, #00af6c)" stroke-width="2">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
             <span>Précédent</span>
         </button>
-        <h2 class="question-theme">
-          {{ currentStep === 0 ? "Analyse par photo" : currentStep === 1 ? "Scan Produit" : "Question" }}
+        <h2 class="question-theme" style="text-align: center; flex: 1; margin: 0 10px; line-height: 1.25; font-size: 18px; max-width: 60%; word-break: break-word;">
+          {{ getAllSteps()[currentStep]?.title || 'Questionnaire' }}
         </h2>
         <button class="nav-btn next" [style.visibility]="currentStep < totalSteps - 1 ? 'visible' : 'hidden'" (click)="next()">
             <span>Suivant</span>
@@ -132,59 +169,55 @@ interface Marker {
 
       <!-- STEP 1: PHOTO ANALYSIS OVERRIDE -->
       <main class="question-content" *ngIf="currentStep === 0">
-        
-        <!-- CAPTURE STATE -->
-        <div *ngIf="photoState === 'capture'" class="photo-capture-view">
-          <div class="q-title-wrap">
-            <div class="q-text" style="border:none">Veuillez prendre en photo la paume ou le dos de votre main pour commencer l'analyse.</div>
-          </div>
-          
-          <div class="camera-simulation">
-            <div class="camera-frame">
-              <img src="/assets/images/questionnaire1.png" alt="Hand ghost" class="ghost-hand" onerror="this.style.display='none'">
-              <div class="scan-line"></div>
-            </div>
-            <button class="capture-btn" (click)="takePhoto()">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle></svg>
-            </button>
-          </div>
+
+        <div class="q-title-wrap" style="margin-bottom: 20px;">
+            <div class="q-text" style="border:none; font-family: 'Rethink Sans', sans-serif;">Veuillez prendre en photo les 4 zones de vos mains.</div>
         </div>
 
-        <!-- SYNTHESIS STATE -->
-        <div *ngIf="photoState === 'analyze'" class="photo-analyze-view">
-          <div style="display:flex; width: 100%; gap: 10px; justify-content: center; align-items:center; margin-bottom: 16px;">
-              <div class="score-panel" style="margin-bottom:0; width:60%;">
-                <div class="score-title">Santé de la peau</div>
-                <div class="score-value" [class.warning]="healthScore < 50">{{ healthScore }} / 100</div>
-              </div>
-              <button style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:none; border:1px solid #EAEAEA; border-radius:12px; padding:10px; cursor:pointer;" (click)="retakePhoto()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color, #00af6c)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-                <span style="font-size:10px; margin-top:4px; font-family: 'Rethink Sans', sans-serif; font-weight: 700; color:var(--primary-color, #00af6c);">Reprendre</span>
-              </button>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 0 16px;">
+          <!-- RIGHT FRONT -->
+          <div style="background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+            <div style="font-size: 12px; font-weight: 700; margin-bottom: 8px;">Main droite <span style="font-weight: 400; color: #666;">(Avant)</span></div>
+            <div style="width: 100%; aspect-ratio: 1; border: 2px dashed #EAEAEA; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative;">
+               <input type="file" accept="image/*" capture="environment" style="position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 5;" (change)="onFile0($event, 'RF')">
+               <div *ngIf="!photos['RF']" style="display:flex; flex-direction:column; align-items:center;">
+                  <svg width="24" height="24" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+               </div>
+               <img *ngIf="photos['RF']" [src]="photos['RF']" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;" />
             </div>
-
-          <p class="instruction-text">Sélectionnez la couleur et touchez la zone :</p>
-          <div class="toolbar">
-            <button class="tool-btn green-btn" [class.active]="selectedColor === 'green'" (click)="selectedColor = 'green'">
-              <div class="dot green-dot"></div> Saine
-            </button>
-            <button class="tool-btn orange-btn" [class.active]="selectedColor === 'orange'" (click)="selectedColor = 'orange'">
-              <div class="dot orange-dot"></div> Modérée
-            </button>
-            <button class="tool-btn red-btn" [class.active]="selectedColor === 'red'" (click)="selectedColor = 'red'">
-              <div class="dot red-dot"></div> Importante
-            </button>
           </div>
-
-          <div class="image-map-container" (click)="addMarker($event)">
-            <img src="/assets/images/questionnaire1.png" alt="Main analysée" class="analyzed-img" onerror="this.src='https://images.unsplash.com/photo-1616858599423-7db4c8fb232a?w=500&auto=format&fit=crop&q=60'">
-            <div *ngFor="let m of markers; let i = index" class="marker-point" 
-                 [ngClass]="'marker-' + m.type"
-                 [style.left]="m.x + '%'"
-                 [style.top]="m.y + '%'"
-                 (click)="removeMarker(i, $event)">
+          <!-- RIGHT BACK -->
+          <div style="background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+            <div style="font-size: 12px; font-weight: 700; margin-bottom: 8px;">Main droite <span style="font-weight: 400; color: #666;">(Arrière)</span></div>
+            <div style="width: 100%; aspect-ratio: 1; border: 2px dashed #EAEAEA; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative;">
+               <input type="file" accept="image/*" capture="environment" style="position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 5;" (change)="onFile0($event, 'RB')">
+               <div *ngIf="!photos['RB']" style="display:flex; flex-direction:column; align-items:center;">
+                  <svg width="24" height="24" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+               </div>
+               <img *ngIf="photos['RB']" [src]="photos['RB']" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;" />
             </div>
-            <p class="map-hint">Touchez l'image pour marquer une zone</p>
+          </div>
+          <!-- LEFT FRONT -->
+          <div style="background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+            <div style="font-size: 12px; font-weight: 700; margin-bottom: 8px;">Main gauche <span style="font-weight: 400; color: #666;">(Avant)</span></div>
+            <div style="width: 100%; aspect-ratio: 1; border: 2px dashed #EAEAEA; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative;">
+               <input type="file" accept="image/*" capture="environment" style="position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 5;" (change)="onFile0($event, 'LF')">
+               <div *ngIf="!photos['LF']" style="display:flex; flex-direction:column; align-items:center;">
+                  <svg width="24" height="24" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+               </div>
+               <img *ngIf="photos['LF']" [src]="photos['LF']" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;" />
+            </div>
+          </div>
+          <!-- LEFT BACK -->
+          <div style="background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+            <div style="font-size: 12px; font-weight: 700; margin-bottom: 8px;">Main gauche <span style="font-weight: 400; color: #666;">(Arrière)</span></div>
+            <div style="width: 100%; aspect-ratio: 1; border: 2px dashed #EAEAEA; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative;">
+               <input type="file" accept="image/*" capture="environment" style="position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 5;" (change)="onFile0($event, 'LB')">
+               <div *ngIf="!photos['LB']" style="display:flex; flex-direction:column; align-items:center;">
+                  <svg width="24" height="24" fill="none" stroke="#00af6c" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+               </div>
+               <img *ngIf="photos['LB']" [src]="photos['LB']" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;" />
+            </div>
           </div>
         </div>
       </main>
@@ -260,25 +293,25 @@ interface Marker {
       </main>
 
       <!-- STANDARD QUESTIONS (STEP > 1) -->
-      <main class="question-content" *ngIf="currentStep > 1 && currentQuestion">
-        <div class="q-title-wrap">
-          <div class="q-text">{{ currentQuestion.text }}</div>
-        </div>
-
-        <div class="options-wrap">
-          <button 
-            *ngFor="let opt of currentQuestion.options"
-            class="action-btn-styled"
-            [class.selected]="isSelected(currentQuestion, opt.id)"
-            (click)="toggleOption(currentQuestion, opt.id)">
-            {{ opt.label }}
-          </button>
+      <main class="question-content" *ngIf="currentStep > 1 && currentQuestionnaireQuestions.length > 0" style="padding-bottom:100px; display:flex; flex-direction:column; gap:20px;">
+        <div class="question-block" *ngFor="let q of currentQuestionnaireQuestions; let i = index" style="background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            <h3 style="margin-top:0; margin-bottom:16px; font-size:16px; color:#111;">{{i + 1}}. {{ q.text }}</h3>
+            <div class="options-row" style="display:flex; flex-wrap:wrap; gap:10px;">
+              <button 
+                *ngFor="let opt of q.options"
+                class="option-pill"
+                [class.selected]="currentAnswers[q.id] === opt"
+                (click)="selectAnswer(q.id, opt)"
+                style="background: #f4f6f5; border: 1px solid transparent; padding: 10px 16px; border-radius: 20px; font-weight: 500; font-size: 14px; cursor: pointer; color: #333; transition: all 0.2s;">
+                {{ opt }}
+              </button>
+            </div>
         </div>
       </main>
 
       <!-- BOTTOM ACTION -->
       <div class="bottom-action">
-        <button *ngIf="!((currentStep === 0 && photoState === 'capture') || (currentStep === 1 && scannerState === 'scan'))"
+        <button *ngIf="!((currentStep === 1 && scannerState === 'scan'))"
           class="primary-btn save-btn" 
           (click)="currentStep === totalSteps - 1 ? validate() : next()">
           {{ currentStep === totalSteps - 1 ? 'Valider le bilan' : 'Sauvegarder et passer à la suite' }}
@@ -314,15 +347,22 @@ interface Marker {
       height: 12px;
       border-radius: 50%;
     }
-    .green-dot {
+    .green-dot { width: 12px; height: 12px; border-radius: 50%;
       background-color: #4CAF50;
     }
-    .red-dot {
+    .red-dot { width: 12px; height: 12px; border-radius: 50%;
       background-color: #F44336;
     }
     .item-content {
       flex: 1;
     }
+    
+    .option-pill.selected {
+      background: rgba(0, 175, 108, 0.1) !important;
+      border-color: #00af6c !important;
+      color: #00af6c !important;
+    }
+
     .item-content h3 {
       margin: 0 0 4px 0;
       font-size: 16px;
@@ -666,7 +706,7 @@ interface Marker {
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
-      padding-bottom: 20px;
+      padding-bottom: 20px; position:relative; z-index:20; margin-top:-20px; border-radius: 20px 20px 0 0; overflow:hidden;
       overflow: hidden;
       margin-bottom: 10px;
       min-height: 380px;
@@ -766,9 +806,9 @@ interface Marker {
       transition: all 0.2s;
     }
     .dot { width: 10px; height: 10px; border-radius: 50%; }
-    .green-dot { background: #2ECC71; }
+    .green-dot { width: 12px; height: 12px; border-radius: 50%; background: #2ECC71; }
     .orange-dot { background: #F39C12; }
-    .red-dot { background: #E74C3C; }
+    .red-dot { width: 12px; height: 12px; border-radius: 50%; background: #E74C3C; }
 
     .tool-btn.active { border-width: 2px; }
     .green-btn.active { border-color: #2ECC71; background: rgba(46,204,113,0.1); }
@@ -954,14 +994,15 @@ interface Marker {
   `]
 })
 export class QuestionnaireComponent implements OnInit {
-  goToRoute(path: string) { this.router.navigate([path]); }
+  goToRoute(path: string) { this.router.navigateByUrl(path); }
 
   questions: Question[] = [];
   state!: QuestionnaireState;
+  stateService = inject(PatientStateService);
   
   viewMode: 'list' | 'step' = 'list';
   currentStep = 0;
-  totalSteps = 5;
+  totalSteps = 9;
   currentDate = new Date();
   location = inject(Location);
 
@@ -970,6 +1011,22 @@ export class QuestionnaireComponent implements OnInit {
   selectedColor: 'green' | 'orange' | 'red' = 'green';
   markers: Marker[] = [];
   scannerState: 'scan' | 'result' = 'scan';
+
+  photos: { [key: string]: string | null } = {
+    'RF': null, 'RB': null, 'LF': null, 'LB': null
+  };
+
+  onFile0(event: Event, zone: string) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => { this.photos[zone] = e.target?.result as string; };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  currentQuestionnaireQuestions: any[] = [];
+  currentAnswers: Record<string, any> = {};
   
   constructor(
     private qService: QuestionnaireService,
@@ -978,15 +1035,19 @@ export class QuestionnaireComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      if (params['start']) {
+      if (params['start'] || params['step']) {
         this.viewMode = 'step';
-        this.currentStep = 0;
+        this.currentStep = params['step'] ? parseInt(params['step'], 10) : 0;
       }
     });
-    this.questions = this.qService.getQuestions();
-    this.totalSteps = this.questions.length > 0 ? this.questions.length + 2 : 5;
+
+    this.totalSteps = this.getAllSteps().length;
     this.qService.state$.subscribe(s => this.state = s);
     
+    if (this.currentStep >= 2) {
+       this.loadCurrentQuestionnaire();
+    }
+
     if (this.markers.length > 0) {
       this.photoState = 'analyze';
     }
@@ -1019,12 +1080,46 @@ export class QuestionnaireComponent implements OnInit {
   prev() {
     if (this.currentStep > 0) {
       this.currentStep--;
+      if (this.currentStep >= 2) this.loadCurrentQuestionnaire();
+    }
+  }
+
+  loadCurrentQuestionnaire() {
+    this.currentAnswers = {};
+    const stepDef = this.getAllSteps()[this.currentStep];
+    if (stepDef && stepDef.id && (QUESTIONNAIRES as any)[stepDef.id]) {
+       this.currentQuestionnaireQuestions = (QUESTIONNAIRES as any)[stepDef.id];
+    } else {
+       this.currentQuestionnaireQuestions = [];
+    }
+  }
+
+  saveCurrentAnswers() {
+    if (this.currentStep >= 2) {
+       const stepDef = this.getAllSteps()[this.currentStep];
+       if (stepDef && stepDef.id && Object.keys(this.currentAnswers).length > 0) {
+          this.stateService.addQuestionnaireInstance(stepDef.id, this.currentAnswers);
+       }
     }
   }
 
   next() {
+    this.saveCurrentAnswers();
     if (this.currentStep < this.totalSteps - 1) {
       this.currentStep++;
+      if (this.currentStep >= 2) {
+         this.loadCurrentQuestionnaire();
+      }
+    }
+  }
+
+  selectAnswer(qId: string | number, opt: string) {
+    if (Array.isArray(this.currentAnswers[qId])) {
+       const idx = this.currentAnswers[qId].indexOf(opt);
+       if (idx > -1) this.currentAnswers[qId].splice(idx, 1);
+       else this.currentAnswers[qId].push(opt);
+    } else {
+       this.currentAnswers[qId] = opt;
     }
   }
 
@@ -1051,26 +1146,49 @@ export class QuestionnaireComponent implements OnInit {
 
   getAllSteps() {
     return [
-      { index: 0, title: 'Analyse par photo' },
-      { index: 1, title: 'Scan Produit' },
-      ...this.questions.map((q, i) => ({ index: i + 2, title: q.text }))
+      { id: 'photo', title: 'Analyse par photo', type: 'internal', index: 0 },
+      { id: 'scan', title: 'Scan Produit', type: 'internal', index: 1 },
+      { id: 'anamnese', title: 'Anamnèse et histoire de la maladie', type: 'external', index: 2 },
+      { id: 'exposition', title: 'Exposition et facteurs aggravants', type: 'external', index: 3 },
+      { id: 'symptomes', title: 'Symptômes actuels et localisation', type: 'external', index: 4 },
+      { id: 'impact', title: 'Impact fonctionnel des mains', type: 'external', index: 5 },
+      { id: 'qvt', title: 'Qualité de vie émotionnelle', type: 'external', index: 6 },
+      { id: 'stigmatisation', title: 'Stigmatisation', type: 'external', index: 7 },
+      { id: 'traitement', title: 'Traitement et prise en charge', type: 'external', index: 8 }
     ];
+  }
+
+  handleStepClick(step: any) {
+    this.goToStep(step.index);
   }
 
   goToStep(index: number) {
     this.currentStep = index;
+    if (this.currentStep >= 2) {
+       this.loadCurrentQuestionnaire();
+       // Also load existing answers if they exist!
+       const stepDef = this.getAllSteps()[this.currentStep];
+       const pState = this.stateService.stateSubject.getValue();
+       if (stepDef && pState.questionnaires && pState.questionnaires[stepDef.id] && pState.questionnaires[stepDef.id].length > 0) {
+          // Pre-fill answers from the most recent submission if user is editing
+          this.currentAnswers = JSON.parse(JSON.stringify(pState.questionnaires[stepDef.id][0].answers));
+       }
+    }
     this.viewMode = 'step';
   }
 
   isAnswered(stepIndex: number): boolean {
+    const step = this.getAllSteps()[stepIndex];
+    if (!step) return false;
+    
+    const pState = this.stateService.stateSubject.getValue();
+    if (pState.questionnaires && pState.questionnaires[step.id] && pState.questionnaires[step.id].length > 0) {
+       return true;
+    }
+
     if (stepIndex === 0) return this.markers && this.markers.length > 0;
     if (stepIndex === 1) return this.scannerState === 'result';
-    const qIndex = stepIndex - 2;
-    if (qIndex < 0 || !this.questions || qIndex >= this.questions.length) return false;
-    const q = this.questions[qIndex];
-    if (!this.state || !this.state.answers) return false;
-    const ans = this.state.answers[q.id];
-    return ans !== undefined && (Array.isArray(ans) ? ans.length > 0 : !!ans);
+    return false;
   }
 
   get healthScore(): number {
@@ -1122,6 +1240,7 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   validate() {
+    this.saveCurrentAnswers();
     this.qService.calculateScore();
     this.router.navigate(['/confirmation']);
   }

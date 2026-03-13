@@ -332,5 +332,5 @@ export class MonitoringComponent {
   goBack() {
     this.location.back();
   }
-  goTo(path: string) { if(this.router) this.router.navigate([path]); }
+  goTo(path: string) { if(this.router) this.router.navigateByUrl(path); }
 }

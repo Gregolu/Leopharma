@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { PdfExportService } from '../../services/pdf-export.service';
 import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common';
 import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
@@ -27,16 +28,14 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
       </header>
       
       <div class="page-content">
-        <div class="download-card">
-          <div class="download-icon">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" class="stroke-primary" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-              <line x1="12" y1="11" x2="12" y2="17"></line>
-              <polyline points="9 14 12 17 15 14"></polyline>
-            </svg>
+        <div class="download-card" style="display:flex; flex-direction:row; background:rgba(0,175,108,0.1); border-radius:16px; padding:24px; align-items:center; justify-content:space-between; margin-bottom:32px;">
+          <div class="download-info" style="flex:1; padding-right:16px; display:flex; flex-direction:column; align-items:center; text-align:center;">
+            <h2 style="font-size:22px; font-weight:800; color:var(--primary-color, #00af6c); margin:0 0 12px 0; max-width:80%;">Télécharger mon dossier</h2>
+            <p style="font-size:14px; color:#4A5568; line-height:1.4; margin:0 0 20px 0;">Télécharger facilement le fichier pour un meilleur suivi avec les professionnels de santé.</p>
+            <button (click)="exportPdf()" style="background:var(--primary-color, #00af6c); color:white; border:none; padding:12px 24px; border-radius:30px; font-weight:600; cursor:pointer;">Télécharger</button>
           </div>
-          <div class="download-info">
-            <h2>Télécharger mon fichier</h2>
+          <div class="download-image" style="width:100px; display:flex; align-items:center; justify-content:center;">
+            <img src="assets/images/visual-pdf.png" alt="PDF" style="width:100%; height:100%; object-fit:contain;" />
           </div>
         </div>
 
@@ -288,11 +287,16 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
 })
 export class ShareComponent {
   router = inject(Router);
+  pdfExportService = inject(PdfExportService);
+
+  exportPdf() {
+    this.pdfExportService.generatePdf();
+  }
 
   location = inject(Location);
 
   goBack() {
     this.location.back();
   }
-  goTo(path: string) { if(this.router) this.router.navigate([path]); }
+  goTo(path: string) { if(this.router) this.router.navigateByUrl(path); }
 }
